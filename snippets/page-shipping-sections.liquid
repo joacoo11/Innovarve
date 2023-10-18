@@ -1,0 +1,110 @@
+{% for block in section.blocks %}
+    <div {{ block.shopify_attributes }}>
+      {% case block.type %}
+
+        {% when 'hero-video' %}
+          {% include 'page-block-hero-video' %}
+
+        {% when 'image-hero' %}
+          {% include 'page-block-image-hero' %}
+          
+		  {% assign count = 1 %}
+		{% when 'shipping-block' %}
+			
+			<div id="shipping_block{{ count }}" class="shipping_block">
+				<div class="page-width shipping-small">
+					<ul class="shipping_links">
+						<li>
+							<a href="#shipping_block1" class="btn btn--secondary aos-init aos-animate{% if count == 1 %} active{% endif %}">Shipping</a>
+						</li>
+						<li>
+							<a href="#shipping_block2" class="btn btn--secondary aos-init aos-animate{% if count == 2 %} active{% endif %}">Delivery</a>
+						</li>
+						<li>
+							<a href="#shipping_block3" class="btn btn--secondary aos-init aos-animate{% if count == 3 %} active{% endif %}">Store pickup</a>
+						</li>
+						<li>
+							<a href="#shipping_block4" class="btn btn--secondary aos-init aos-animate{% if count == 4 %} active{% endif %}">Returns & exchanges</a>
+						</li>
+					</ul>
+					<header class="section-header">
+						<p class="h1 section-header__title">
+							{{ block.settings.block_title }}
+						</p>
+					</header>
+					<div class="shipping_section">
+						{% if block.settings.title1 != blank or block.settings.text1 != blank %}
+							<div class="shipping_section_content">
+								{% if block.settings.title1 %}
+									<p class="h3">{{ block.settings.title1 }}</p>
+								{% endif %}
+								{% if block.settings.text1 %}
+									<div class="text">
+										{{ block.settings.text1 }}
+									</div>
+								{% endif %}
+							</div>
+						{% endif %}
+						{% if block.settings.title2 != blank or block.settings.text2 != blank %}
+							<div class="shipping_section_content">
+								{% if block.settings.title2 %}
+									<p class="h3">{{ block.settings.title2 }}</p>
+								{% endif %}
+								{% if block.settings.text2 %}
+									<div class="text">
+										{{ block.settings.text2 }}
+									</div>
+								{% endif %}
+							</div>
+						{% endif %}
+						{% if block.settings.title3 != blank or block.settings.text3 != blank %}
+							<div class="shipping_section_content">
+								{% if block.settings.title3 %}
+									<p class="h3">{{ block.settings.title3 }}</p>
+								{% endif %}
+								{% if block.settings.text3 %}
+									<div class="text">
+										{{ block.settings.text3 }}
+									</div>
+								{% endif %}
+							</div>
+						{% endif %}
+						{% if block.settings.title4 != blank or block.settings.text4 != blank %}
+							<div class="shipping_section_content">
+								{% if block.settings.title4 %}
+									<p class="h3">{{ block.settings.title4 }}</p>
+								{% endif %}
+								{% if block.settings.text4 %}
+									<div class="text">
+										{{ block.settings.text4 }}
+									</div>
+								{% endif %}
+							</div>
+						{% endif %}
+						{% if block.settings.title5 != blank or block.settings.text5 != blank %}
+							<div class="shipping_section_content">
+								{% if block.settings.title5 %}
+									<p class="h3">{{ block.settings.title5 }}</p>
+								{% endif %}
+								{% if block.settings.text5 %}
+									<div class="text">
+										{{ block.settings.text5 }}
+									</div>
+								{% endif %}
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			{% assign count = count | plus: 1 %}
+			
+			{% when 'effective-date' %}
+			<div class="page-width shipping-small">
+				<div class="effective_date">
+					<span>Effective date: {{ block.settings.bottom_line_text }}
+				</div>
+			</div>
+				
+      {% endcase %}
+    </div>
+  {% endfor %}

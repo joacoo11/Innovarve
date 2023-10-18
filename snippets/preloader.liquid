@@ -1,0 +1,20 @@
+<div class="preloader">
+	<div class="logo">
+		<img
+          class="small--hide"
+          src="{{ settings.preloader_logo | img_url: '' }}"
+          alt="{{ settings.preloader_logo.alt | default: shop.name }}"
+          itemprop="logo">
+        <img
+          class="medium-up--hide"
+          src="{{ settings.preloader_logo_mobile | img_url: '' }}"
+          alt="{{ settings.preloader_logo_mobile.alt | default: shop.name }}">
+	</div>
+	<!-- <div class="spinning-icon"></div> -->
+</div>
+
+<script>
+	window.addEventListener('load',function() {
+	  document.querySelector('body').classList.add('loaded');
+	});
+</script>

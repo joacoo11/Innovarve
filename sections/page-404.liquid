@@ -1,0 +1,89 @@
+{%- assign img_url = section.settings.page_bg | img_url: '4472x4472' -%}
+<div class="co_404_wrapper">
+	<div class="co_404_image">
+		<img src="{{ img_url }}" alt="" />
+	</div>
+	<div class="page-width">
+		<header class="section-header section-header--404">
+		    <h1 class="section-header__title">{% comment %}{{ 'general.404.title' | t }}{% endcomment %}We’re sorry, something went wrong.</h1>
+		    <div class="rte text-spacing">
+		      {% comment %}{{ 'general.404.subtext_html' | t: url: routes.root_url }}{% endcomment %}	
+		      If you typed in a URL, check it for errors. You can use our search bar or pick a category below.
+		    </div>
+		  </header>
+		  <div class="co_404_top_menu">
+				{%-assign menu1 = section.settings.link_list1 -%}
+				<ul>
+				{% for link in linklists[menu1].links %}
+				  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+				{% endfor %}
+				</ul>
+			</div>
+		<div class="grid">
+			<div class="grid__item medium-up--one-third">
+				{%-assign menu2 = section.settings.link_list2 -%}
+				<p class="h3 menu_title">{{ linklists[menu2].title }}</p>
+				<ul class="co_404_menu">
+					{% for link in linklists[menu2].links %}
+					  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="grid__item medium-up--one-third">
+				{%-assign menu3 = section.settings.link_list3 -%}
+				<p class="h3 menu_title">{{ linklists[menu3].title }}</p>
+				<ul class="co_404_menu">
+					{% for link in linklists[menu2].links %}
+					  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="grid__item medium-up--one-third">
+				<p class="h3 menu_title">Contact Us</p>
+				<ul class="co_404_menu">
+					<li>
+						{{ settings.general_phone }}
+					</li>
+					<li>
+						<a href="mailto:{{ settings.general_email }}">{{ settings.general_email }}</a>
+					</li>
+					<li>
+						<a href="#">Online Chat</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "Page 404",
+	"settings": [
+		{
+			"type": "header",
+			"content": "Block 1"
+		},
+		{ 
+        	"type": "image_picker",
+			"id": "page_bg",
+			"label": "Page Background"
+		},
+		{
+			"type": "link_list",
+			"id": "link_list1",
+			"label": "Menu 1"
+		},
+		{
+			"type": "link_list",
+			"id": "link_list2",
+			"label": "Menu 2"
+		},
+		{
+			"type": "link_list",
+			"id": "link_list3",
+			"label": "Menu 3"
+		}
+    ]
+}
+{% endschema %}

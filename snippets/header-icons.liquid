@@ -1,0 +1,61 @@
+<div class="site-nav">
+  <div class="site-nav__icons">
+    {% if section.settings.url_agenda != blank %}
+      <a class="site-nav__link site-nav__link--icon icon-agenda small--hide" href="{{ section.settings.url_agenda }}" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g><g><path fill="#1b1d20" d="M24 1.772v18.034A4.197 4.197 0 0 1 19.8 24H4.2C1.88 24 0 22.122 0 19.806V1.772h6V0h1.2v1.772h9.6V0H18v1.772zM1.2 2.97v3.815h21.6V2.97H18v2.022h-1.2V2.97H7.2v2.022H6V2.97zm21.6 16.836V7.983H1.2v11.823a2.998 2.998 0 0 0 3 2.996h15.6c1.657 0 3-1.342 3-2.996z"/></g></g></svg>
+        <span class="icon__nav-text">
+          {{ 'layout.customer.schedule_link_line1' | t }}<br>{{ 'layout.customer.schedule_link_line2' | t }}
+        </span>
+      </a>
+    {% endif %}
+    {% if section.settings.url_tienda != blank %}
+      <a class="site-nav__link site-nav__link--icon icon-tienda small--hide" href="{{section.settings.url_tienda}}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="24" viewBox="0 0 20 24"><g><g><path fill="#1b1d20" d="M16.357 2.215c.552.441 1.054.94 1.497 1.486 3.418 4.215 2.672 10.323-1.665 13.643a20.024 20.024 0 0 0-5.398 5.882l-.274.48a.591.591 0 0 1-.513.294.592.592 0 0 1-.512-.292 18.722 18.722 0 0 0-5.359-6.133c-2.028-1.428-3.43-3.543-3.93-5.928C-.9 6.39 2.592 1.26 8.004.189c2.955-.574 6.02.169 8.352 2.026zm-.895 14.23c2.125-1.63 3.364-4.116 3.359-6.746-.01-4.735-3.966-8.565-8.839-8.557a9.445 9.445 0 0 0-1.755.168 8.85 8.85 0 0 0-5.374 3.367C-.007 8.51.873 13.87 4.818 16.647a19.292 19.292 0 0 1 5.176 5.628 21.544 21.544 0 0 1 5.464-5.828zm-1.34-6.731c0 2.21-1.844 4-4.118 4-2.273 0-4.117-1.79-4.117-4s1.844-4 4.117-4c2.274 0 4.118 1.79 4.118 4zm-1.177 0c0-1.578-1.316-2.857-2.94-2.857-1.625 0-2.941 1.279-2.941 2.857 0 1.578 1.316 2.857 2.94 2.857 1.625 0 2.941-1.279 2.941-2.857z"/></g></g></svg>
+        <span class="icon__nav-text">
+          {{ 'layout.customer.store_link' | t }}
+        </span>
+      </a>
+    {% endif %}
+    {% if shop.customer_accounts_enabled %}
+      <a class="site-nav__link site-nav__link--icon icon-iniciar small--hide" href="{{ routes.account_url }}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 22 24"><g><g><path fill="#1b1d20" d="M22 23.429a.56.56 0 0 1-.548.571H.548A.56.56 0 0 1 0 23.43c.005-4.732 3.681-8.567 8.217-8.572h5.565c4.537.005 8.213 3.84 8.218 8.572zm-1.116-.572c-.29-3.868-3.382-6.853-7.102-6.857H8.217c-3.719.004-6.81 2.99-7.1 6.857zM4.974 6.286C4.974 2.814 7.672 0 11 0s6.026 2.814 6.026 6.286c0 3.471-2.698 6.285-6.026 6.285-3.327-.003-6.023-2.816-6.026-6.285zm1.095 0c0 2.84 2.208 5.143 4.931 5.143s4.93-2.303 4.93-5.143S13.724 1.143 11 1.143c-2.722.003-4.927 2.304-4.93 5.143z"/></g></g></svg>
+        <span class="icon__nav-text">
+          {% if customer %}
+            {{ 'layout.customer.account' | t }}
+          {% else %}
+            {{ 'layout.customer.log_in' | t }}
+          {% endif %}
+        </span>
+      </a>
+    {% endif %}
+
+    {% if settings.search_enable %}
+      <a href="{{ routes.search_url }}" class="site-nav__link site-nav__link--icon js-search-header small--hide js-no-transition{% if section.settings.main_menu_alignment == 'center-split' or section.settings.main_menu_alignment == 'center' %} medium-up--hide{% endif %}">
+        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-search" viewBox="0 0 64 64"><path d="M47.16 28.58A18.58 18.58 0 1 1 28.58 10a18.58 18.58 0 0 1 18.58 18.58zM54 54L41.94 42"/></svg>
+        <span class="icon__fallback-text">{{ 'general.search.title' | t }}</span>
+      </a>
+    {% endif %}
+
+    {% if section.settings.main_menu_alignment == 'left' or section.settings.main_menu_alignment == 'left-center' or section.settings.main_menu_alignment == 'center' or section.settings.main_menu_alignment == 'left-drawer' %}
+      <button
+        type="button"
+        class="site-nav__link site-nav__link--icon small--hide js-drawer-open-nav{% if section.settings.main_menu_alignment == 'left' or section.settings.main_menu_alignment == 'left-center' %} medium-up--hide{% endif %}"
+        aria-controls="NavDrawer">
+        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-hamburger" viewBox="0 0 64 64"><path d="M7 15h51M7 32h43M7 49h51"/></svg>
+        <span class="icon__fallback-text">{{ 'general.drawers.navigation' | t }}</span>
+      </button>
+    {% endif %}
+
+    <a href="{{ routes.cart_url }}" class="site-nav__link site-nav__link--icon icon-carro js-drawer-open-cart js-no-transition" aria-controls="CartDrawer" data-icon="{{ settings.cart_icon }}">
+      <span class="cart-link">
+        {%- if settings.cart_icon == 'cart' -%}
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g><g><path fill="#1b1d20" d="M22.858 17.714a.572.572 0 0 1-.572.572H8a2.286 2.286 0 0 1-.156-4.556L4.696 1.143H.571A.571.571 0 0 1 .571 0h4.572c.261.001.489.18.552.433l.686 2.732h17.048a.571.571 0 0 1 .558.693L21.7 14.406a.572.572 0 0 1-.558.45H8a1.143 1.143 0 1 0 0 2.286h14.286c.316 0 .572.256.572.571zM6.666 4.307l2.352 9.407h11.668l2.034-9.407zm5.906 17.407a2.286 2.286 0 1 1-4.572 0 2.286 2.286 0 0 1 4.572 0zm-1.143 0a1.143 1.143 0 1 0-2.286 0 1.143 1.143 0 0 0 2.286 0zm10.286 0a2.286 2.286 0 1 1-4.572 0 2.286 2.286 0 0 1 4.572 0zm-1.143 0a1.143 1.143 0 1 0-2.286 0 1.143 1.143 0 0 0 2.286 0z"/></g></g></svg>
+        {%- else -%}
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-bag" viewBox="0 0 64 64"><g fill="none" stroke="#000" stroke-width="2"><path d="M25 26c0-15.79 3.57-20 8-20s8 4.21 8 20"/><path d="M14.74 18h36.51l3.59 36.73h-43.7z"/></g></svg>
+        {%- endif -%}
+        <span class="icon__nav-text">{{ 'layout.cart.title' | t }}</span>
+        <span class="cart-link__bubble{% if cart.item_count > 0 %} cart-link__bubble--visible{% endif %}"></span>
+      </span>
+    </a>
+  </div>
+</div>

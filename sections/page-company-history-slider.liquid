@@ -1,0 +1,145 @@
+
+<div class="company-slider">
+  <div class="company-slider--years">
+      <div class="page-width">
+          <ul class="timeline-nav">
+              {% for block in section.blocks %}
+                  <li class="timeline__item">
+                    <span>{{ block.settings.year }}</span>
+                  </li>
+              {% endfor %}
+          </ul>
+      </div>
+  </div>
+  <div class="timeline-wrapper">
+    <div class="page-width timeline-wrapper--slides">
+      {% for block in section.blocks %}
+        <div class="timeline-slide" data-aos>
+          <div class="company-slider--image feature-row__item">
+            <div style="margin: 0 auto; max-width: {{ block.settings.image.width }}px;">
+              {% if block.settings.image != blank %}
+                <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image.aspect_ratio }}%;">
+                  {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                  <img class="feature-row__image lazyload"
+                      data-src="{{ img_url }}"
+                      data-widths="[360, 540, 720, 800, 820, 900, 1080]"
+                      data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                      data-sizes="auto"
+                      alt="{{ block.settings.image.alt }}">
+                </div>
+              {% else %}
+                <div class="image-wrap">
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="copy" data-aos="fade-up" data-aos-duration="1500">
+            {% if block.settings.title != blank %}
+            <h3>{{ block.settings.title }}</h3>
+            {% endif %}
+            {% if block.settings.text != blank %}
+            <div class="rte-setting text-spacing">{{ block.settings.text }}</div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+      <div class="timeline-arrows"></div>
+    </div>
+  </div>
+</div>
+
+{%- comment -%}{%- endcomment -%}
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+  $('.timeline-nav').slick({
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    centerMode: false,
+    focusOnSelect: true,
+    mobileFirst: true,
+    arrows: false,
+    infinite: false,
+    asNavFor: '.timeline-wrapper--slides',
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  });
+  $('.timeline-wrapper--slides').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    infinite:false,
+    //centerMode: true,
+    cssEase: 'ease',
+    edgeFriction: 0.5,
+    mobileFirst: true,
+    speed: 500,
+    slide: '.timeline-slide',
+    asNavFor: '.timeline-nav',
+    arrows: true,
+    appendArrows: $('.timeline-wrapper--slides').find('.timeline-arrows'),
+  });
+}, false);
+</script>
+
+
+
+
+{% schema %}
+  {
+    "name": "Slider with dates",
+    "class": "page-company-history-slider",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Slider heading text",
+        "default": "Explore The Colors"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text_block",
+        "name": "Slide",
+        "settings": [
+          {
+            "type": "text",
+            "id": "year",
+            "label": "Year",
+            "info": "Ex: 2006"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Company foundation"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Somos una empresa que cuenta con mas de 14 anos en el mercado, especializados en la venta de electrodomesticos y productos para el hogar de las mejores marcas del mercado nacional e internacional.</p>"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

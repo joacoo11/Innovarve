@@ -1,0 +1,251 @@
+{%- assign blockId = block.id -%}
+{%- if product -%}
+  {%- assign blockId = block.id | append: product.id -%}
+{%- endif -%}
+
+{%- assign has_custom_tabs = false -%}
+{%- for tag in product.tags -%}
+  {%- if tag contains '_tab' -%}
+    {%- assign has_custom_tabs = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign reviews_as_tab = false -%}
+{%- if settings.enable_product_reviews and settings.reviews_layout == 'expandable' -%}
+  {%- assign reviews_as_tab = true -%}
+{%- endif -%}
+
+<div class="collapsibles-wrapper collapsibles-wrapper--border-bottom prod_additional-cont">
+  <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders is-open" 
+    aria-controls="Product-description-1-{{ section_id }}">
+    {{ 'products.product.description' | t }}
+    {% include 'collapsible-icons' %}
+  </button>
+  <div id="Product-description-1-{{ section_id }}" class="collapsible-content collapsible-content--all is-open">
+    <div class="collapsible-content__inner rte">
+      {{ product.description }}
+
+      <div class="grid grid--flex grid--flex-center">
+        {% for value in product.metafields.product_features.title %}
+          <div class="grid__item medium-up--one-quarter medium--one-half" data-aos="row-of-4">
+            {% if product.metafields.product_features.image[forloop.index0] != blank %}
+              <div class="product__grid-image">
+                <div class="image-wrap">
+                  <img class="lazyloaded" src="{{ product.metafields.product_features.image[forloop.index0] }}" alt="{{ product.metafields.product_features.title[forloop.index0] | escape }}">
+                </div>
+              </div>
+           	{% endif %}
+            {% if product.metafields.product_features.title[forloop.index0] != blank %}
+            	<h3 class="prod-feature-title">{{ product.metafields.product_features.title[forloop.index0] }}</h3>
+            {% endif %}
+            {% if product.metafields.product_features.text[forloop.index0] != blank %}
+            	<div class="rte-setting text-spacing">{{ product.metafields.product_features.text[forloop.index0] }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders is-open" 
+    aria-controls="Product-specification-1-{{ section_id }}">
+    {{ 'products.product.specification' | t }}
+    {% include 'collapsible-icons' %}
+  </button>
+
+  <div id="Product-specification-1-{{ section_id }}" class="collapsible-content collapsible-content--all is-open">
+    <div class="collapsible-content__inner rte">
+
+      {% for value in product.metafields.prod_specifications.title %}
+        <div class="grid product__grid-specitem">
+          <div class="grid__item medium-up--one-third" data-aos="row-of-3">
+            <div class="specitem-title">
+              <h4>{{ product.metafields.prod_specifications.title[forloop.index0] }}</h4>
+            </div>
+          </div>
+          <div class="grid__item medium-up--one-third" data-aos="row-of-3">
+            <div class="rte-setting text-spacing specitem-list">
+              {{ product.metafields.prod_specifications.list_1[forloop.index0] }}
+            </div>
+          </div>
+          <div class="grid__item medium-up--one-third" data-aos="row-of-3">
+            <div class="rte-setting text-spacing specitem-list">
+              {{ product.metafields.prod_specifications.list_2[forloop.index0] }}
+            </div>
+          </div>
+        </div>
+        {%- unless forloop.last -%}
+          <hr class="hr--medium">
+        {%- endunless -%}
+      {% endfor %}
+    </div>
+  </div>
+
+  {%- if settings.product_content_1 != blank or settings.product_content_2 != blank or settings.product_content_3 != blank or settings.product_contact or reviews_as_tab or has_custom_tabs -%}
+    {%- for tag in product.tags -%}
+      {%- if tag contains '_tab' -%}
+        {%- assign include_page_handle = tag | split: '_' -%}
+        {%- assign include_page = pages[include_page_handle.last] -%}
+        {%- if include_page.title != blank -%}
+          <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height" aria-controls="Product-content-{{ include_page_handle.last }}-{{ section_id }}">
+            {{ include_page.title }}
+            {% include 'collapsible-icons' %}
+          </button>
+          <div id="Product-content-{{ include_page_handle.last }}-{{ section_id }}" class="collapsible-content collapsible-content--all">
+            <div class="collapsible-content__inner rte">
+              {{ include_page.content }}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if settings.product_content_1 != blank -%}
+      {%- if settings.product_content_collapse_1 -%}
+        <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders" aria-controls="Product-content-1-{{ section_id }}">
+          {{ pages[settings.product_content_1].title }}
+          {% include 'collapsible-icons' %}
+        </button>
+      {% else %}
+        <div class="label collapsible-trigger-btn collapsible-trigger-btn--borders">
+          {{ pages[settings.product_content_1].title }}
+        </div>
+      {%- endif -%}
+
+      <div id="Product-content-1-{{ section_id }}" class="collapsible-content{% unless settings.product_content_collapse_1 %} collapsible-content--expanded{% else %} collapsible-content--all{% endunless %}">
+        <div class="collapsible-content__inner rte">
+          {{ pages[settings.product_content_1].content }}
+        </div>
+      </div>
+    {%- endif -%}
+    {%- if settings.product_content_2 != blank -%}
+      {%- if settings.product_content_collapse_2 -%}
+        <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders" aria-controls="Product-content-2-{{ section_id }}">
+          {{ pages[settings.product_content_2].title }}
+          {% include 'collapsible-icons' %}
+        </button>
+      {% else %}
+        <div class="label collapsible-trigger-btn collapsible-trigger-btn--borders">
+          {{ pages[settings.product_content_2].title }}
+        </div>
+      {%- endif -%}
+
+      <div id="Product-content-2-{{ section_id }}" class="collapsible-content{% unless settings.product_content_collapse_2 %} collapsible-content--expanded{% else %} collapsible-content--all{% endunless %}">
+        <div class="collapsible-content__inner rte">
+          {{ pages[settings.product_content_2].content }}
+        </div>
+      </div>
+    {%- endif -%}
+    {%- if settings.product_content_3 != blank -%}
+      {%- if settings.product_content_collapse_3 -%}
+        <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders" aria-controls="Product-content-3-{{ section_id }}">
+          {{ pages[settings.product_content_3].title }}
+          {% include 'collapsible-icons' %}
+        </button>
+      {% else %}
+        <div class="label collapsible-trigger-btn collapsible-trigger-btn--borders">
+          {{ pages[settings.product_content_3].title }}
+        </div>
+      {%- endif -%}
+
+      <div id="Product-content-3-{{ section_id }}" class="collapsible-content{% unless settings.product_content_collapse_3 %} collapsible-content--expanded{% else %} collapsible-content--all{% endunless %}">
+        <div class="collapsible-content__inner rte">
+          {{ pages[settings.product_content_3].content }}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if settings.product_contact -%}
+      {% form 'contact' %}
+        <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders" aria-controls="Product-content-4-{{ section_id }}">
+          {{ settings.product_contact_title }}
+          {% include 'collapsible-icons' %}
+        </button>
+
+        <div id="Product-content-4-{{ section_id }}" class="collapsible-content collapsible-content--all">
+          <div class="collapsible-content__inner rte">
+            <div class="form-vertical">
+
+              <input type="hidden" name="contact[product]" value="Product question for: {{ shop.secure_url }}/admin/products/{{ product.id }}">
+
+              <div class="grid grid--small">
+                <div class="grid__item medium-up--one-half">
+                  <label for="ContactFormName-{{ blockId }}">{{ 'contact.form.name' | t }}</label>
+                  <input type="text" id="ContactFormName-{{ blockId }}" class="input-full" name="contact[name]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+                </div>
+
+                <div class="grid__item medium-up--one-half">
+                  <label for="ContactFormEmail-{{ blockId }}">{{ 'contact.form.email' | t }}</label>
+                  <input type="email" id="ContactFormEmail-{{ blockId }}" class="input-full" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+                </div>
+              </div>
+
+              {%- if settings.product_contact_show_phone -%}
+                <label for="ContactFormPhone-{{ blockId }}">{{ 'contact.form.phone' | t }}</label>
+                <input type="tel" id="ContactFormPhone-{{ blockId }}" class="input-full" name="contact[phone]" pattern="[0-9\-]*" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+              {%- endif -%}
+
+              <label for="ContactFormMessage-{{ blockId }}">{{ 'contact.form.message' | t }}</label>
+              <textarea rows="5" id="ContactFormMessage-{{ blockId }}" class="input-full" name="contact[body]">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+              <button type="submit" class="btn">
+                {{ 'contact.form.send' | t }}
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+        {%- if form.posted_successfully? -%}
+          <p class="note note--success">
+            {{ 'contact.form.post_success' | t }}
+          </p>
+        {%- endif -%}
+
+        {%- if form.product -%}
+          {{ form.errors | default_errors }}
+        {%- endif -%}
+
+      {% endform %}
+    {%- endif -%}
+
+    {%- if reviews_as_tab -%}
+      <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height" aria-controls="Product-content-5-{{ section_id }}">
+        <span class="shopify-product-reviews-badge" data-id="{{ product.id }}">{{ 'products.product.reviews' | t }}</span>
+        {% include 'collapsible-icons' %}
+      </button>
+
+      <div id="Product-content-5-{{ section_id }}" class="collapsible-content collapsible-content--all">
+        <div class="collapsible-content__inner product-reviews product-reviews--tab">
+          <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+
+  <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders" 
+    aria-controls="Product-faq-1-{{ section_id }}">
+    {{ 'products.product.frequent_questions' | t }}
+    {% include 'collapsible-icons' %}
+  </button>
+
+  <div id="Product-faq-1-{{ section_id }}" class="collapsible-content collapsible-content--all">
+    <div class="collapsible-content__inner rte">
+      Accordion content for 'Preguntas frecuentes'
+    </div>
+  </div>
+
+  <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders" 
+    aria-controls="Product-manuals-1-{{ section_id }}">
+    {{ 'products.product.manuals_and_guides' | t }}
+    {% include 'collapsible-icons' %}
+  </button>
+
+  <div id="Product-manuals-1-{{ section_id }}" class="collapsible-content collapsible-content--all">
+    <div class="collapsible-content__inner rte">
+      Accordion content for 'Manuales y guías'
+    </div>
+  </div>
+
+</div>
+

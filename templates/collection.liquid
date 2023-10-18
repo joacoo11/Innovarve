@@ -1,0 +1,25 @@
+{% section 'collection-header' %}
+
+<div id="CollectionAjaxResult" class="collection-content">
+  <div id="CollectionAjaxContent">
+    <div class="page-width">
+	    {% include 'breadcrumbs' %}
+      {%- comment -%}
+	    {% section 'plp-icons' %}
+      {%- endcomment -%}
+      <div class="grid">
+        <div class="grid__item medium-up--one-quarter grid__item--sidebar">
+          {% section 'collection-sidebar' %}
+        </div>
+        <div class="grid__item medium-up--three-quarters grid__item--content">
+	        {% comment %}
+          {% section 'collection-promotions' %}
+            {% endcomment %}
+          <div class="collection-grid__wrapper">
+            {% section 'collection-template' %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,728 @@
+{% for block in section.blocks %}
+  <div {{ block.shopify_attributes }}>
+    {% case block.type %}
+
+      {% when 'image-hero' %}
+        {% include 'page-block-image-hero' %}
+        {% break %}
+
+    {% endcase %}
+  </div>
+{% endfor %} 
+
+{%- comment -%}
+<div class="page-width faq-cont faq--search-cont">
+  <h4 class="faq-search--title text-center">{{ 'general.search.block_title' | t }}</h4>
+
+  <form class="faq-search--form">
+      <input type="text" class="place_for_search" id="text-to-find" value="" placeholder="{{ 'general.search.faq_search_placeholder' | t }}" autofocus> 
+      <input class="button_for_turn_back" type="button" onclick="javascript: FindOnPage('text-to-find',false); return false;" value="{{ 'general.search.faq_search_cancel' | t }}" title="{{ 'general.search.faq_search_cancel' | t }}">
+      <input class="button_for_search btn" type="submit" onclick="javascript: FindOnPage('text-to-find',true); return false;" placeholder="{{ 'general.search.faq_search_submit' | t }}" value="{{ 'general.search.faq_search_submit' | t }}" title="{{ 'general.search.faq_search_submit' | t }}">
+  </form>
+</div>
+
+<script>
+  var input,search,pr,result,result_arr, locale_HTML, result_store;
+
+  function func() {
+    locale_HTML = document.body.innerHTML;   // сохраняем в переменную весь body (Первоначальный)
+  }
+  setTimeout(func, 1000);  //ждем подгрузки Jsona и выполняем
+
+  function FindOnPage(name, status) {
+
+    input = document.getElementById(name).value; //получаем значение из поля в html
+    
+    if(input.length<3&&status==true)
+    {
+      alert('Debes ingresar tres o más caracteres para buscar');
+      function FindOnPageBack() { document.body.innerHTML = locale_HTML; }
+    }
+    
+    if(input.length>=3)
+    {
+      function FindOnPageGo() {
+
+        search = '/'+input+'/g';  //делаем из строки регуярное выражение
+        pr = document.body.innerHTML;   // сохраняем в переменную весь body
+        result = pr.match(/>(.*?)</g);  //отсекаем все теги и получаем только текст
+        result_arr = [];   //в этом массиве будем хранить результат работы (подсветку)
+
+        var warning = true;
+        for(var i=0;i<result.length;i++) {
+          if(result[i].match(eval(search))!=null) {
+            warning = false;
+          }
+        }
+        if(warning == true) {
+          alert('No se encontraron coincidencias');
+        }
+
+        for(var i=0; i<result.length;i++) {
+          result_arr[i] = result[i].replace(eval(search), '<span class="form-result" style="background-color:#0050c447;">'+input+'</span>'); //находим нужные элементы, задаем стиль и сохраняем в новый массив
+        }
+        for(var i=0; i<result.length;i++) {
+          pr=pr.replace(result[i],result_arr[i])  //заменяем в переменной с html текст на новый из новогом ассива
+        }
+        document.body.innerHTML = pr;  //заменяем html код
+      }
+    }
+    function FindOnPageBack() { document.body.innerHTML = locale_HTML; }
+    if(status) { FindOnPageBack(); FindOnPageGo(); } //чистим прошлое и Выделяем найденное
+    if(!status) { FindOnPageBack(); } //Снимаем выделение
+  }
+</script>
+{%- endcomment -%}
+
+{%- if section.settings.page_title_enable or section.settings.page_content_enable -%}
+  <div class="page-width page-content{% if section.blocks.size > 0 %} page-content--with-blocks{% endif %}">
+
+    <div class="grid">
+      <div class="grid__item medium-up--three-quarters medium-up--push-one-eighth">
+        {%- include 'breadcrumbs' -%}
+
+        {% if section.settings.page_title_enable %}
+          <header class="section-header">
+            <h1 class="section-header__title">{{ page.title }}</h1>
+          </header>
+        {% endif %}
+
+        {% if section.settings.page_content_enable %}
+          <div class="rte text-spacing">
+            {{ page.content }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="page-width faq-cont faq-title-tabs">
+    <div class="grid">
+      <div class="grid__item one-whole">
+        <h3 class="text-center">{{ section.settings.tab_title }}</h3>
+        <!-- Tab links -->
+        <div class="tab faq-tab">
+          {% for i in (1..4) %}
+            {% capture tab_icon %}tab_icon_{{ i }}{% endcapture %}
+            {% capture tab_title %}tab_title_{{ i }}{% endcapture %}
+
+            <button class="tablinks" onclick="openFaq(event, '{{ section.settings[tab_title] | handleize }}')">
+              <span class="faq-icon">{{ section.settings[tab_icon] }}</span>
+              {{ section.settings[tab_title] | escape }}
+            </button>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="page-width faq-cont">
+    <div class="grid">
+      <div class="grid__item one-whole">
+        <!-- Tab content 1/4-->
+        <div id="{{ section.settings.tab_title_1 | handleize }}" class="tabcontent">
+          {% if section.settings.tab_title_1 != blank %}
+            <p class="h2 text-center" data-aos="fade-up" data-aos-duration="1500">
+              {{ section.settings.tab_title_1 | escape }}
+            </p>
+          {% endif %}
+          {% comment %} {% if section.settings.tab_text_1 != blank %}
+            <div class="rte text-center" data-aos="fade-up" data-aos-duration="2000">
+                {{ section.settings.tab_text_1 }}
+            </div>
+          {% endif %} {% endcomment %}
+
+          {%- for block in section.blocks -%}
+            {% case block.type %}
+              {% when 'question_tab_1'%}
+                {% include 'page-block-faq' %}
+            {% endcase %}
+          {%- endfor -%}        
+        </div>
+        <!-- Tab content 2/4-->
+        <div id="{{ section.settings.tab_title_2 | handleize }}" class="tabcontent">
+          {% if section.settings.tab_title_2 != blank %}
+            <p class="h2 text-center" data-aos="fade-up" data-aos-duration="1500">
+              {{ section.settings.tab_title_2 | escape }}
+            </p>
+          {% endif %}
+          {% if section.settings.tab_text_2 != blank %}
+            <div class="rte text-center" data-aos="fade-up" data-aos-duration="2000">
+                {{ section.settings.tab_text_2 }}
+            </div>
+          {% endif %}
+
+          {%- for block in section.blocks -%}
+            {% case block.type %}
+              {% when 'question_tab_2'%}
+                {% include 'page-block-faq' %}
+            {% endcase %}
+          {%- endfor -%}        
+        </div>
+        <!-- Tab content 3/4-->
+        <div id="{{ section.settings.tab_title_3 | handleize }}" class="tabcontent">
+          {% if section.settings.tab_title_3 != blank %}
+            <p class="h2 text-center" data-aos="fade-up" data-aos-duration="1500">
+              {{ section.settings.tab_title_3 | escape }}
+            </p>
+          {% endif %}
+          {% if section.settings.tab_text_3 != blank %}
+            <div class="rte text-center" data-aos="fade-up" data-aos-duration="2000">
+                {{ section.settings.tab_text_3 }}
+            </div>
+          {% endif %}
+
+          {%- for block in section.blocks -%}
+            {% case block.type %}
+              {% when 'question_tab_3'%}
+                {% include 'page-block-faq' %}
+            {% endcase %}
+          {%- endfor -%}        
+        </div>
+        <!-- Tab content 4/4-->
+        <div id="{{ section.settings.tab_title_4 | handleize }}" class="tabcontent">
+          {% if section.settings.tab_title_4 != blank %}
+            <p class="h2 text-center" data-aos="fade-up" data-aos-duration="1500">
+              {{ section.settings.tab_title_4 | escape }}
+            </p>
+          {% endif %}
+          {% if section.settings.tab_text_4 != blank %}
+            <div class="rte text-center" data-aos="fade-up" data-aos-duration="2000">
+                {{ section.settings.tab_text_4 }}
+            </div>
+          {% endif %}
+
+          {%- for block in section.blocks -%}
+            {% case block.type %}
+              {% when 'question_tab_4'%}
+                {% include 'page-block-faq' %}
+            {% endcase %}
+          {%- endfor -%}        
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<div class="contact-tel-email-chat">
+  <div class="page-width faq-cont">
+      <h3 class="contact-tel--title">{{ section.settings.faq_contact_title }}</h3>
+      <div class="grid contact-us--grid">
+	    <div class="grid__item medium-up--one-third" data-aos="flip-down" data-aos-duration="2500"  data-aos="row-of-3">
+          <div class="contact-us--item text-center">
+          <div class="contact-svg">
+	          <svg id="SVGDoc" width="40" height="32" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 40 32"><defs></defs><g><g><title>Shape 674</title><path d="M38.02536,29.61936c-0.19296,0.27394 -0.45532,0.4769 -0.75512,0.59187c-7.13978,2.73442 -32.77225,2.11966 -35.14937,-0.40948c-0.12156,-0.12946 -0.24143,-0.30774 -0.32124,-0.49889c-1.30617,-3.13121 -1.79964,-9.58264 -1.79964,-13.30394c0,-3.70306 0.47534,-10.05578 1.79373,-13.29088c0.08071,-0.19866 0.20558,-0.3832 0.32674,-0.51212c2.37062,-2.52342 28.00318,-3.14659 35.14977,-0.40948c0.2949,0.11301 0.56266,0.31561 0.75993,0.59849c1.06434,1.52922 1.96987,8.41856 1.96987,13.614c0,5.5747 -0.9585,12.17598 -1.97468,13.62044zM35.82598,25.53739c1.19582,-5.7022 1.1784,-13.45843 -0.0001,-19.07676l-9.92746,9.53829zM33.35333,4.25299c-7.12176,-1.26171 -19.62211,-1.25492 -26.70662,0l13.35331,12.8299zM14.10162,15.99892l-9.92766,-9.53847c-1.19582,5.7022 -1.1783,13.45843 0.0002,19.07676zM33.35313,27.74467l-9.83984,-9.45407l-2.38173,2.28846c-0.63416,0.60904 -1.62881,0.60922 -2.26297,0l-2.38183,-2.28846l-9.83984,9.45407c7.12036,1.26135 19.62141,1.2551 26.70622,0z" fill="#ffffff" fill-opacity="1"></path></g></g></svg>
+	          
+			
+          </div>
+          <a class="cart-link" href="mailto:{{ section.settings.cart_title_3 }}" title="{{ section.settings.cart_title_3 }}">{{ section.settings.cart_title_3 }}</a>
+          {{ section.settings.cart_text_3 }}
+          </div>
+      </div>
+      <div class="grid__item medium-up--one-third" data-aos="flip-down" data-aos-duration="500"  data-aos="row-of-3">
+          <div class="contact-us--item text-center">
+          <div class="contact-svg">
+		  	<svg id="SVGDoc" width="40" height="40" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 40 40"><defs></defs><g><g><title>Shape 673</title><path d="M25.89459,9.97604c2.25346,-0.02557 4.09075,1.79654 4.09075,4.03941c0,2.22802 -1.81266,4.04048 -4.04078,4.04048c-2.24685,0 -4.08564,-1.84751 -4.03868,-4.12363c-3.74558,1.27155 -6.71421,4.24021 -7.98593,7.98547c2.28069,-0.04721 4.12399,1.79654 4.12399,4.03833c0,2.22802 -1.81266,4.04048 -4.04078,4.04048c-2.27929,0 -4.04068,-1.88524 -4.04068,-3.99059c0,-8.93462 7.26435,-15.97649 15.93211,-16.02995zM34.13988,34.13792c-7.8157,7.81524 -20.46505,7.81417 -28.27975,0c-7.8159,-7.81542 -7.8147,-20.46418 0,-28.27817c7.8158,-7.81542 20.46515,-7.81435 28.27975,0c7.8159,7.81524 7.8147,20.464 0,28.27817zM20,36.70962c9.215,0 16.71186,-7.49642 16.71186,-16.71088c0,-9.21428 -7.49697,-16.71088 -16.71186,-16.71088c-9.215,0 -16.71196,7.49642 -16.71196,16.71088c0,9.21446 7.49697,16.71088 16.71196,16.71088z" fill="#1b1d20" fill-opacity="1"></path></g></g></svg>
+          </div>
+          <a class="cart-link" href="https://wa.me/{{ section.settings.cart_title_1 | remove: '-'| remove: '+' }}" title="{{ section.settings.cart_title_1 }}">{{ section.settings.cart_title_1 }}</a>
+          {{ section.settings.cart_text_1 }}
+          </div>
+      </div>
+
+      <div class="grid__item medium-up--one-third" data-aos="flip-down" data-aos-duration="1500"  data-aos="row-of-3">
+          <div class="contact-us--item text-center">
+          <div class="contact-svg">
+		  	<svg id="SVGDoc" width="40" height="36" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:avocode="https://avocode.com/" viewBox="0 0 40 36"><defs></defs><g><g><title>Shape 675</title><path d="M38.21749,2.7241c0.0727,0.18668 1.78252,4.67169 1.78252,13.17823c0,8.50636 -1.70962,12.99137 -1.78242,13.17823c-0.16933,0.43434 -0.5137,0.77659 -0.94779,0.94181c-0.13979,0.05311 -3.44697,1.2787 -11.8724,1.66547l-4.29853,3.88706c-0.62475,0.56505 -1.57303,0.56487 -2.19778,0l-4.29853,-3.88706c-8.42543,-0.3866 -11.73261,-1.61219 -11.8723,-1.66547c-0.43429,-0.16522 -0.77856,-0.50747 -0.94789,-0.94181c-0.0728,-0.18686 -1.78242,-4.67169 -1.78242,-13.17823c0,-8.50654 1.70962,-12.99155 1.78252,-13.17823c0.16923,-0.43452 0.5137,-0.77659 0.94789,-0.94199c6.28813,-2.39074 28.32521,-2.36249 34.53914,0c0.43429,0.16522 0.77866,0.50747 0.94799,0.94199zM35.39186,4.66316c-7.08741,-1.82408 -23.68883,-1.82623 -30.78415,0c-1.75869,6.10149 -1.7685,16.34324 0.0004,22.47888c1.35063,0.34851 4.67995,1.03104 10.71984,1.2728c0.38302,0.0152 0.74862,0.16469 1.0336,0.42236l3.63833,3.29l3.63843,-3.29c0.28499,-0.25767 0.65058,-0.40716 1.0335,-0.42236c6.03999,-0.24176 9.36951,-0.92429 10.72014,-1.2728c1.7663,-6.12688 1.76129,-16.36863 -0.0001,-22.47888zM19.99988,14.22541c0.92165,0 1.66886,0.75084 1.66886,1.67692c0,0.92608 -0.74721,1.67674 -1.66886,1.67674c-0.92165,0 -1.66876,-0.75066 -1.66876,-1.67674c0,-0.92608 0.74711,-1.67692 1.66876,-1.67692zM11.62983,14.22541c0.92165,0 1.66876,0.75084 1.66876,1.67692c0,0.92608 -0.74711,1.67674 -1.66876,1.67674c-0.92165,0 -1.66886,-0.75066 -1.66886,-1.67674c0,-0.92608 0.74721,-1.67692 1.66886,-1.67692zM28.344,14.22541c0.92165,0 1.66876,0.75084 1.66876,1.67692c0,0.92608 -0.74711,1.67674 -1.66876,1.67674c-0.92165,0 -1.66876,-0.75066 -1.66876,-1.67674c0,-0.92608 0.74711,-1.67692 1.66876,-1.67692z" fill="#1b1d20" fill-opacity="1"></path></g></g></svg>
+          </div>
+          <p class="cart-text">{{ section.settings.cart_title_2 }}</p>
+          {{ section.settings.cart_text_2 }}
+          </div>
+      </div>
+      </div>
+  </div>
+</div>
+
+<script>
+  function openFaq(evt, faqName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(faqName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    $('.faq-tab .tablinks').first().addClass('active');
+    $('.faq-cont .tabcontent').first().css( "display", "block" );
+  });
+  /*
+  document.addEventListener('DOMContentLoaded', function() {
+      $('.faq-cont .tabcontent .faq-questions-cont').each(function() {
+        $(this).first().find( "button, .collapsible-content" ).addClass('is-open');
+      });
+  });
+  */
+</script>
+
+{% schema %}
+  {
+    "name": "Page.faq page",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "page_title_enable",
+        "label": "Show page title"
+      },
+      {
+        "type": "checkbox",
+        "id": "page_content_enable",
+        "label": "Show page content"
+      },
+      {
+        "type": "header",
+        "content": "Tab cards",
+        "info": "4 cards with tab title"
+      },
+      {
+        "type": "text",
+        "id": "tab_title",
+        "label": "Title before cards",
+        "default": "O elija una categoría para encontrar rápidamente la ayuda que necesita"
+      },
+      {
+        "type": "text",
+        "id": "tab_title_1",
+        "label": "Title #1",
+        "default": "Tab title"
+      },
+      {
+        "type": "textarea",
+        "id": "tab_icon_1",
+        "label": "SVG code for icon #1"
+      },
+      {
+        "type": "richtext",
+        "id": "tab_text_1",
+        "label": "Text #1"
+      },
+      {
+        "type": "text",
+        "id": "tab_title_2",
+        "label": "Title #2",
+        "default": "Tab title"
+      },
+      {
+        "type": "textarea",
+        "id": "tab_icon_2",
+        "label": "SVG code for icon #2"
+      },
+      {
+        "type": "richtext",
+        "id": "tab_text_2",
+        "label": "Text #2"
+      },
+      {
+        "type": "text",
+        "id": "tab_title_3",
+        "label": "Title #3",
+        "default": "Tab title"
+      },
+      {
+        "type": "textarea",
+        "id": "tab_icon_3",
+        "label": "SVG code for icon #3"
+      },
+      {
+        "type": "richtext",
+        "id": "tab_text_3",
+        "label": "Text #3"
+      },
+      {
+        "type": "text",
+        "id": "tab_title_4",
+        "label": "Title #4",
+        "default": "Tab title"
+      },
+      {
+        "type": "textarea",
+        "id": "tab_icon_4",
+        "label": "SVG code for icon #4"
+      },
+      {
+        "type": "richtext",
+        "id": "tab_text_4",
+        "label": "Text #4"
+      },
+      {
+        "type": "header",
+        "content": "Contact blocks",
+        "info": "3 cards with contact information"
+      },
+      {
+        "type": "textarea",
+        "id": "faq_contact_title",
+        "label": "Title block",
+        "default": "Aún tienes preguntas?"
+      },
+      {
+        "type": "header",
+        "content": "#1. Phone number cart"
+      },
+      {
+        "type": "text",
+        "id": "cart_title_1",
+        "label": "Phone number",
+        "default": "+58 212-988-1494"
+      },
+      {
+        "type": "richtext",
+        "id": "cart_text_1",
+        "label": "Cart description",
+        "default": "<p>La mejor forma de obtener la respuesta más rápido.</p>"
+      },
+      {
+        "type": "header",
+        "content": "#2. Chat cart"
+      },
+      {
+        "type": "text",
+        "id": "cart_title_2",
+        "label": "Text",
+        "default": "Habla con nosotros"
+      },
+      {
+        "type": "richtext",
+        "id": "cart_text_2",
+        "label": "Chat description",
+        "default": "<p>Chat en vivo con un miembro del equipo de soporte</p>"
+      },
+      {
+        "type": "header",
+        "content": "#3. Email cart"
+      },
+      {
+        "type": "text",
+        "id": "cart_title_3",
+        "label": "Email address",
+        "default": "info@innovar.com.ve"
+      },
+      {
+        "type": "richtext",
+        "id": "cart_text_3",
+        "label": "Cart description",
+        "default": "<p>Siempre estamos felices de ayudar.</p>"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "question_tab_1",
+        "name": "Question for tab #1",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Question",
+            "default": "Frequently asked question"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
+          }
+        ]
+      },
+      {
+        "type": "question_tab_2",
+        "name": "Question for tab #2",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Question",
+            "default": "Frequently asked question"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
+          }
+        ]
+      },
+      {
+        "type": "question_tab_3",
+        "name": "Question for tab #3",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Question",
+            "default": "Frequently asked question"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
+          }
+        ]
+      },
+      {
+        "type": "question_tab_4",
+        "name": "Question for tab #4",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Question",
+            "default": "Frequently asked question"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
+          }
+        ]
+      },
+      {
+        "type": "image-hero",
+        "name": "Image hero",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "parallax",
+            "label": "Enable parallax",
+            "default": true
+          },
+          {
+            "type": "textarea",
+            "id": "title",
+            "label": "Heading",
+            "default": "Two line\ntitle image"
+          },
+          {
+            "type": "range",
+            "id": "title_size",
+            "label": "Heading text size",
+            "default": 80,
+            "min": 40,
+            "max": 100,
+            "unit": "px"
+          },
+          {
+            "type": "text",
+            "id": "subheading",
+            "label": "Subheading",
+            "default": "And optional subtext"
+          },
+          {
+            "type": "richtext",
+            "id": "richtext",
+            "label": "Text"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "Link text",
+            "default": "Optional button"
+          },
+          {
+            "type": "url",
+            "id": "link_2",
+            "label": "Second link"
+          },
+          {
+            "type": "text",
+            "id": "link_text_2",
+            "label": "Second link text 2"
+          },
+          {
+            "type": "color",
+            "id": "color_accent",
+            "label": "Buttons",
+            "default": "rgba(0,0,0,0)"
+          },
+          {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text alignment",
+            "default": "vertical-center horizontal-center",
+            "options": [
+              {
+                "value": "vertical-center horizontal-left",
+                "label": "Center left"
+              },
+              {
+                "value": "vertical-center horizontal-center",
+                "label": "Center"
+              },
+              {
+                "value": "vertical-center horizontal-right",
+                "label": "Center right"
+              },
+              {
+                "value": "vertical-bottom horizontal-left",
+                "label": "Bottom left"
+              },
+              {
+                "value": "vertical-bottom horizontal-center",
+                "label": "Bottom center"
+              },
+              {
+                "value": "vertical-bottom horizontal-right",
+                "label": "Bottom right"
+              }
+            ]
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "focal_point",
+            "label": "Image focal point",
+            "info": "Used to keep the subject of your photo in view.",
+            "default": "center center",
+            "options": [
+              {
+                "value": "20% 0",
+                "label": "Top left"
+              },
+              {
+                "value": "top center",
+                "label": "Top center"
+              },
+              {
+                "value": "80% 0",
+                "label": "Top right"
+              },
+              {
+                "value": "20% 50%",
+                "label": "Left"
+              },
+              {
+                "value": "center center",
+                "label": "Center"
+              },
+              {
+                "value": "80% 50%",
+                "label": "Right"
+              },
+              {
+                "value": "20% 100%",
+                "label": "Bottom left"
+              },
+              {
+                "value": "bottom center",
+                "label": "Bottom center"
+              },
+              {
+                "value": "80% 100%",
+                "label": "Bottom right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "section_height",
+            "label": "Desktop height",
+            "default": "650px",
+            "options": [
+              {
+                "label": "Natural",
+                "value": "natural"
+              },
+              {
+                "label": "200px",
+                "value": "200px"
+              },
+              {
+                "label": "340px",
+                "value": "340px"
+              },
+              {
+                "label": "450px",
+                "value": "450px"
+              },
+              {
+                "label": "550px",
+                "value": "550px"
+              },
+              {
+                "label": "650px",
+                "value": "650px"
+              },
+              {
+                "label": "750px",
+                "value": "750px"
+              },
+              {
+                "label": "Full screen",
+                "value": "100vh"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "mobile_height",
+            "label": "Mobile height",
+            "default": "auto",
+            "info": "Not used if desktop height is set to natural",
+            "options": [
+              {
+                "label": "Auto",
+                "value": "auto"
+              },
+              {
+                "label": "250px",
+                "value": "250px"
+              },
+              {
+                "label": "300px",
+                "value": "300px"
+              },
+              {
+                "label": "400px",
+                "value": "400px"
+              },
+              {
+                "label": "500px",
+                "value": "500px"
+              },
+              {
+                "label": "Full screen",
+                "value": "100vh"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

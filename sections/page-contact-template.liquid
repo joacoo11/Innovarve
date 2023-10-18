@@ -1,0 +1,809 @@
+{% if section.settings.page_title_enable or section.settings.page_content_enable %}
+  <div class="page-width page-content{% if section.blocks.size > 0 %} page-content--with-blocks{% endif %}">
+
+    <div class="grid">
+      <div class="grid__item medium-up--three-quarters medium-up--push-one-eighth">
+        {%- include 'breadcrumbs' -%}
+
+        {% if section.settings.page_title_enable %}
+          <header class="section-header">
+            <h1 class="section-header__title">{{ page.title }}</h1>
+          </header>
+        {% endif %}
+
+        {% if section.settings.page_content_enable %}
+          <div class="rte text-spacing">
+            {{ page.content }}
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% include 'page-contact-sections' %} 
+
+{% schema %}
+  {
+    "name": "Page.contact page",
+    "class": "page-contact-template",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "page_title_enable",
+        "label": "Show page title",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "page_content_enable",
+        "label": "Show page content",
+        "default": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "contact-form",
+        "name": "Contact form",
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "All submissions are sent to the customer email address of your store. [Learn more](https://help.shopify.com/en/manual/using-themes/change-the-layout/add-contact-form#view-contact-form-submissions)."
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_phone",
+            "label": "Show phone number"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_subject",
+            "label": "Show Message Subject select",
+            "default": true
+          },
+          {
+            "type": "header",
+            "content": "Message Subject options"
+          },
+          {
+            "type": "text",
+            "id": "option_1",
+            "label": "Option #1",
+            "default": "Devolución de un producto roto"
+          },
+          {
+            "type": "text",
+            "id": "option_2",
+            "label": "Option #2"
+          },
+          {
+            "type": "text",
+            "id": "option_3",
+            "label": "Option #3"
+          },
+          {
+            "type": "text",
+            "id": "option_4",
+            "label": "Option #4"
+          },
+          {
+            "type": "text",
+            "id": "option_5",
+            "label": "Option #5"
+          },
+          {
+            "type": "checkbox",
+            "id": "narrow_column",
+            "label": "Narrow column",
+            "default": true
+          }
+        ]
+      },
+      {
+        "type": "image-hero",
+        "name": "Image hero",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "parallax",
+            "label": "Enable parallax",
+            "default": true
+          },
+          {
+            "type": "textarea",
+            "id": "title",
+            "label": "Heading",
+            "default": "Two line\ntitle image"
+          },
+          {
+            "type": "range",
+            "id": "title_size",
+            "label": "Heading text size",
+            "default": 80,
+            "min": 40,
+            "max": 100,
+            "unit": "px"
+          },
+          {
+            "type": "text",
+            "id": "subheading",
+            "label": "Subheading",
+            "default": "And optional subtext"
+          },
+          {
+            "type": "richtext",
+            "id": "richtext",
+            "label": "Text"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "Link text",
+            "default": "Optional button"
+          },
+          {
+            "type": "url",
+            "id": "link_2",
+            "label": "Second link"
+          },
+          {
+            "type": "text",
+            "id": "link_text_2",
+            "label": "Second link text 2"
+          },
+          {
+            "type": "color",
+            "id": "color_accent",
+            "label": "Buttons",
+            "default": "rgba(0,0,0,0)"
+          },
+          {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text alignment",
+            "default": "vertical-center horizontal-center",
+            "options": [
+              {
+                "value": "vertical-center horizontal-left",
+                "label": "Center left"
+              },
+              {
+                "value": "vertical-center horizontal-center",
+                "label": "Center"
+              },
+              {
+                "value": "vertical-center horizontal-right",
+                "label": "Center right"
+              },
+              {
+                "value": "vertical-bottom horizontal-left",
+                "label": "Bottom left"
+              },
+              {
+                "value": "vertical-bottom horizontal-center",
+                "label": "Bottom center"
+              },
+              {
+                "value": "vertical-bottom horizontal-right",
+                "label": "Bottom right"
+              }
+            ]
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "focal_point",
+            "label": "Image focal point",
+            "info": "Used to keep the subject of your photo in view.",
+            "default": "center center",
+            "options": [
+              {
+                "value": "20% 0",
+                "label": "Top left"
+              },
+              {
+                "value": "top center",
+                "label": "Top center"
+              },
+              {
+                "value": "80% 0",
+                "label": "Top right"
+              },
+              {
+                "value": "20% 50%",
+                "label": "Left"
+              },
+              {
+                "value": "center center",
+                "label": "Center"
+              },
+              {
+                "value": "80% 50%",
+                "label": "Right"
+              },
+              {
+                "value": "20% 100%",
+                "label": "Bottom left"
+              },
+              {
+                "value": "bottom center",
+                "label": "Bottom center"
+              },
+              {
+                "value": "80% 100%",
+                "label": "Bottom right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "section_height",
+            "label": "Desktop height",
+            "default": "650px",
+            "options": [
+              {
+                "label": "Natural",
+                "value": "natural"
+              },
+              {
+                "label": "200px",
+                "value": "200px"
+              },
+              {
+                "label": "340px",
+                "value": "340px"
+              },
+              {
+                "label": "450px",
+                "value": "450px"
+              },
+              {
+                "label": "550px",
+                "value": "550px"
+              },
+              {
+                "label": "650px",
+                "value": "650px"
+              },
+              {
+                "label": "750px",
+                "value": "750px"
+              },
+              {
+                "label": "Full screen",
+                "value": "100vh"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "mobile_height",
+            "label": "Mobile height",
+            "default": "auto",
+            "info": "Not used if desktop height is set to natural",
+            "options": [
+              {
+                "label": "Auto",
+                "value": "auto"
+              },
+              {
+                "label": "250px",
+                "value": "250px"
+              },
+              {
+                "label": "300px",
+                "value": "300px"
+              },
+              {
+                "label": "400px",
+                "value": "400px"
+              },
+              {
+                "label": "500px",
+                "value": "500px"
+              },
+              {
+                "label": "Full screen",
+                "value": "100vh"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "map",
+        "name": "Map",
+        "settings": [
+          {
+            "id": "map_title",
+            "type": "text",
+            "label": "Title",
+            "default": "Our retail store"
+          },
+          {
+            "id": "address",
+            "type": "richtext",
+            "label": "Text",
+            "default": "<p>301 Front St W<br>Toronto, Canada</p><p>Mon - Fri, 8:30am - 10:30pm<br>Saturday, 8:30am - 10:30pm<br>Sunday, 8:30am - 10:30pm</p>"
+          },
+          {
+            "id": "map_address",
+            "type": "text",
+            "label": "Map address",
+            "info": "Google maps will find the exact location",
+            "default": "301 Front St W, Toronto, ON M5V 2T6"
+          },
+          {
+            "id": "api_key",
+            "type": "text",
+            "label": "Google Maps API key",
+            "info": "You'll need to [register a Google Maps API Key](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) to display the map"
+          },
+          {
+            "id": "show_button",
+            "type": "checkbox",
+            "label": "Show 'Get directions' button",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "background_image",
+            "label": "Image",
+            "info": "Displayed if the map isn’t loaded"
+          },
+          {
+            "type": "select",
+            "id": "background_image_position",
+            "label": "Image focal point",
+            "default": "center center",
+            "options": [
+              {
+                "label": "Top left",
+                "value": "top left"
+              },
+              {
+                "label": "Top center",
+                "value": "top center"
+              },
+              {
+                "label": "Top right",
+                "value": "top right"
+              },
+              {
+                "label": "Middle left",
+                "value": "center left"
+              },
+              {
+                "label": "Middle center",
+                "value": "center center"
+              },
+              {
+                "label": "Middle right",
+                "value": "center right"
+              },
+              {
+                "label": "Bottom left",
+                "value": "bottom left"
+              },
+              {
+                "label": "Bottom center",
+                "value": "bottom center"
+              },
+              {
+                "label": "Bottom right",
+                "value": "bottom right"
+              }
+            ],
+            "info": "Used to keep the subject of your photo in view."
+          }
+        ]
+      },
+      {
+        "type": "hero-video",
+        "name": "Video hero",
+        "settings": [
+          {
+            "type": "textarea",
+            "id": "title",
+            "label": "Heading",
+            "default": "Bring your\nbrand to life."
+          },
+          {
+            "type": "range",
+            "id": "title_size",
+            "label": "Heading text size",
+            "default": 80,
+            "min": 40,
+            "max": 100,
+            "unit": "px"
+          },
+          {
+            "type": "text",
+            "id": "subheading",
+            "label": "Subheading",
+            "default": "Seamless hero videos"
+          },
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "Button text",
+            "default": "Optional button"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Button link",
+            "info": "Links to YouTube videos will be opened in a video player"
+          },
+          {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text alignment",
+            "default": "vertical-center horizontal-center",
+            "options": [
+              {
+                "value": "vertical-center horizontal-left",
+                "label": "Center left"
+              },
+              {
+                "value": "vertical-center horizontal-center",
+                "label": "Center"
+              },
+              {
+                "value": "vertical-center horizontal-right",
+                "label": "Center right"
+              },
+              {
+                "value": "vertical-bottom horizontal-left",
+                "label": "Bottom left"
+              },
+              {
+                "value": "vertical-bottom horizontal-center",
+                "label": "Bottom center"
+              },
+              {
+                "value": "vertical-bottom horizontal-right",
+                "label": "Bottom right"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "video_url",
+            "label": "Background video link",
+            "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "info": "Supports YouTube, .MP4 and Vimeo. Not all features supported by Vimeo. [Learn more](https://archetypethemes.co/blogs/impulse/how-do-i-add-background-videos)"
+          },
+          {
+            "type": "select",
+            "id": "section_height",
+            "label": "Section height",
+            "default": "650px",
+            "options": [
+              {
+                "label": "450px",
+                "value": "450px"
+              },
+              {
+                "label": "550px",
+                "value": "550px"
+              },
+              {
+                "label": "650px",
+                "value": "650px"
+              },
+              {
+                "label": "750px",
+                "value": "750px"
+              },
+              {
+                "label": "Full screen",
+                "value": "100vh"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "mobile_height",
+            "label": "Mobile height",
+            "default": "auto",
+            "options": [
+              {
+                "label": "Auto",
+                "value": "auto"
+              },
+              {
+                "label": "250px",
+                "value": "250px"
+              },
+              {
+                "label": "300px",
+                "value": "300px"
+              },
+              {
+                "label": "400px",
+                "value": "400px"
+              },
+              {
+                "label": "500px",
+                "value": "500px"
+              },
+              {
+                "label": "Full screen",
+                "value": "100vh"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "contact-tel-email-chat",
+        "name": "Contactar a Innovar",
+        "settings": [
+          {
+            "type": "header",
+            "content": "#1. Phone number cart"
+          },
+          {
+            "type": "text",
+            "id": "cart_title_1",
+            "label": "Phone number",
+            "default": "+58 212-988-1494"
+          },
+          {
+            "type": "richtext",
+            "id": "cart_text_1",
+            "label": "Cart description",
+            "default": "<p>La mejor forma de obtener la respuesta más rápido.</p>"
+          },
+          {
+            "type": "header",
+            "content": "#2. Chat cart"
+          },
+          {
+            "type": "text",
+            "id": "cart_title_2",
+            "label": "Text",
+            "default": "Habla con nosotros"
+          },
+          {
+            "type": "richtext",
+            "id": "cart_text_2",
+            "label": "Chat description",
+            "default": "<p>Chat en vivo con un miembro del equipo de soporte</p>"
+          },
+          {
+            "type": "header",
+            "content": "#3. Email cart"
+          },
+          {
+            "type": "text",
+            "id": "cart_title_3",
+            "label": "Email address",
+            "default": "info@innovar.com.ve"
+          },
+          {
+            "type": "richtext",
+            "id": "cart_text_3",
+            "label": "Cart description",
+            "default": "<p>Siempre estamos felices de ayudar.</p>"
+          }
+        ]
+      },
+      {
+        "type": "contact-address",
+        "name": "Direcciones",
+        "settings": [
+          {
+            "type": "header",
+            "content": "#1. Dirección"
+          },
+          {
+            "type": "text",
+            "id": "title_1",
+            "label": "Title",
+            "default": "C.C Casa Mall"
+          },
+          {
+            "type": "textarea",
+            "id": "address_1",
+            "label": "Address",
+            "default": "Casa Mall, Nivel Los Naranjos, Caracas 1083, Distrito Capital, Venezuela"
+          },
+          {
+            "type": "text",
+            "id": "hours_1",
+            "label": "Working hours",
+            "default": "Lunes a Sábado: 9:00 am - 6:00 pm"
+          },
+          {
+            "type": "url",
+            "id": "url_1",
+            "label": "Link"
+          },
+          {
+            "type": "url",
+            "id": "url_1_1",
+            "label": "Link 2"
+          },
+          {
+            "type": "header",
+            "content": "#2. Dirección"
+          },
+          {
+            "type": "text",
+            "id": "title_2",
+            "label": "Title",
+            "default": "C.C Casa Mall"
+          },
+          {
+            "type": "textarea",
+            "id": "address_2",
+            "label": "Address",
+            "default": "Casa Mall, Nivel Los Naranjos, Caracas 1083, Distrito Capital, Venezuela"
+          },
+          {
+            "type": "text",
+            "id": "hours_2",
+            "label": "Working hours",
+            "default": "Lunes a Sábado: 9:00 am - 6:00 pm"
+          },
+          {
+            "type": "url",
+            "id": "url_2",
+            "label": "Link"
+          },
+          {
+            "type": "url",
+            "id": "url_2_2",
+            "label": "Link 2"
+          },
+          {
+            "type": "header",
+            "content": "#3. Dirección"
+          },
+          {
+            "type": "text",
+            "id": "title_3",
+            "label": "Title",
+            "default": "C.C Casa Mall"
+          },
+          {
+            "type": "textarea",
+            "id": "address_3",
+            "label": "Address",
+            "default": "Casa Mall, Nivel Los Naranjos, Caracas 1083, Distrito Capital, Venezuela"
+          },
+          {
+            "type": "text",
+            "id": "hours_3",
+            "label": "Working hours",
+            "default": "Lunes a Sábado: 9:00 am - 6:00 pm"
+          },
+          {
+            "type": "url",
+            "id": "url_3",
+            "label": "Link"
+          },
+          {
+            "type": "url",
+            "id": "url_3_3",
+            "label": "Link 2"
+          },
+          {
+            "type": "header",
+            "content": "#4. Dirección"
+          },
+          {
+            "type": "text",
+            "id": "title_4",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "address_4",
+            "label": "Address"
+          },
+          {
+            "type": "text",
+            "id": "hours_4",
+            "label": "Working hours"
+          },
+          {
+            "type": "url",
+            "id": "url_4",
+            "label": "Link"
+          },
+          {
+            "type": "url",
+            "id": "url_4_4",
+            "label": "Link 2"
+          },
+          {
+            "type": "header",
+            "content": "#5. Dirección"
+          },
+          {
+            "type": "text",
+            "id": "title_5",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "address_5",
+            "label": "Address"
+          },
+          {
+            "type": "text",
+            "id": "hours_5",
+            "label": "Working hours"
+          },
+          {
+            "type": "url",
+            "id": "url_5",
+            "label": "Link"
+          },
+          {
+            "type": "url",
+            "id": "url_5_5",
+            "label": "Link 2"
+          }
+        ]
+      },
+      {
+        "type": "contact-faq",
+        "name": "Busca preguntas frecuen",
+        "settings": [
+          {
+            "type": "header",
+            "content": "#1. Dirección"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Busca preguntas frecuentes?"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Para preguntas generales, le recomendamos que consulte primero nuestra sección de preguntas frecuentes útiles y útiles. Es probable que haya una respuesta esperándote allí.</p>"
+          },
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Button label",
+            "default": "Ver ahora"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Link"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Right image"
+          }
+        ]
+      }
+    ]
+
+  }
+{% endschema %}

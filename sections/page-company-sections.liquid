@@ -1,0 +1,600 @@
+
+<div class="company-text company-text--1">
+  <div class="page-width">
+    {% if section.settings.text_1 != blank %}
+        {{ section.settings.text_1 }}
+    {% endif %}
+  </div>
+</div>
+
+  {% for block in section.blocks %}
+    <div {{ block.shopify_attributes }}>
+      {% case block.type %}
+
+        {% when 'rectangles' %}
+          <div class="company-rectangles">
+            <div class="page-width">
+              <div class="company-rectangles--cont">
+                {%- comment -%}
+                  <div class="company-rectangles--item rect-one" data-aos="fade-up" data-aos-duration="2000">
+                    <p class="item-data" data-aos="fade-up" data-aos-duration="1500"><span>14</span><br>years</p>
+                    <p class="item-text" data-aos="fade-up" data-aos-duration="3500">Founded in 2006, we bring a decade and a half of experience and industry know-how to your engagement.</p>
+                  </div>
+                  <div class="company-rectangles--item rect-two" data-aos="fade-up" data-aos-duration="2500">
+                    <p class="item-data" data-aos="fade-up" data-aos-duration="2500"><span>20+</span><br>experts</p>
+                    <p class="item-text" data-aos="fade-up" data-aos-duration="4500">Our team is ready to serve you and all your home appliances. Walk the walk and make dreams come true.</p>
+                  </div>
+                  <div class="company-rectangles--item rect-three" data-aos="fade-up" data-aos-duration="3000">
+                    <p class="item-data" data-aos="fade-up" data-aos-duration="3500"><span>95%</span><br>of clients return</p>
+                    <p class="item-text" data-aos="fade-up" data-aos-duration="5500">Innovar trademark is quality. That’s why clients choose to shop with us again at a rate that’s unheard of in our industry.</p>
+                  </div>
+                {%- endcomment -%}
+                {{ block.settings.rect_1 }}
+                {{ block.settings.rect_2 }}
+                {{ block.settings.rect_3 }}
+              </div>
+            </div>
+          </div>
+
+        {% when 'image-promo' %}
+          <div class="company-imagebanner">
+            <div class="page-width" data-aos>
+              <div class="imagebanner-image feature-row__item">
+                <div style="margin: 0 auto; max-width: {{ block.settings.image.width }}px;">
+                  {% if block.settings.image != blank %}
+                    <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image.aspect_ratio }}%;">
+                      {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                      <img class="feature-row__image lazyload"
+                          data-src="{{ img_url }}"
+                          data-widths="[360, 540, 720, 800, 820, 900, 1080]"
+                          data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                          data-sizes="auto"
+                          alt="{{ block.settings.image.alt }}">
+                    </div>
+                  {% else %}
+                    <div class="image-wrap">
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+        {% when 'our-commitment' %}
+          <div class="company-our-commitment">
+            <div class="company-text company-text--2">
+              <div class="page-width">
+                {{ block.settings.text }}
+                <hr class="hr--large">
+
+                <h3 data-aos="fade-up" data-aos-duration="2500">{{ block.settings.title_block }}</h3>
+
+                <div class="commitment-item" data-aos>
+                  <div class="commitment-item--image feature-row__item">
+                    <div style="margin: 0 auto; max-width: {{ block.settings.image_1.width }}px;">
+                      {% if block.settings.image_1 != blank %}
+                        <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image_1.aspect_ratio }}%;">
+                          {%- assign img_url = block.settings.image_1 | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                          <img class="feature-row__image lazyload"
+                              data-src="{{ img_url }}"
+                              data-widths="[360, 540, 720, 940, 1080, 1880 ]"
+                              data-aspectratio="{{ block.settings.image_1.aspect_ratio }}"
+                              data-sizes="auto"
+                              alt="{{ block.settings.image_1.alt }}">
+                        </div>
+                      {% else %}
+                        <div class="image-wrap">
+                          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="commitment-item--copy" data-aos="fade-up" data-aos-duration="2500">
+                    <h4 data-aos="fade-up" data-aos-duration="3500">{{ block.settings.title_1 }}</h4>
+                    {{ block.settings.description_1 }}
+                  </div>
+                </div>
+
+                <div class="commitment-item" data-aos>
+                  <div class="commitment-item--image feature-row__item">
+                    <div style="margin: 0 auto; max-width: {{ block.settings.image_2.width }}px;">
+                      {% if block.settings.image_2 != blank %}
+                        <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image_2.aspect_ratio }}%;">
+                          {%- assign img_url = block.settings.image_2 | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                          <img class="feature-row__image lazyload"
+                              data-src="{{ img_url }}"
+                              data-widths="[360, 540, 720, 940, 1080, 1880 ]"
+                              data-aspectratio="{{ block.settings.image_2.aspect_ratio }}"
+                              data-sizes="auto"
+                              alt="{{ block.settings.image_2.alt }}">
+                        </div>
+                      {% else %}
+                        <div class="image-wrap">
+                          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="commitment-item--copy" data-aos="fade-up" data-aos-duration="2500">
+                    <h4 data-aos="fade-up" data-aos-duration="3500">{{ block.settings.title_2 }}</h4>
+                    {{ block.settings.description_2 }}
+                  </div>
+                </div>
+
+                <div class="commitment-item" data-aos>
+                  <div class="commitment-item--image feature-row__item">
+                    <div style="margin: 0 auto; max-width: {{ block.settings.image_3.width }}px;">
+                      {% if block.settings.image_3 != blank %}
+                        <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image_3.aspect_ratio }}%;">
+                          {%- assign img_url = block.settings.image_3 | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                          <img class="feature-row__image lazyload"
+                              data-src="{{ img_url }}"
+                              data-widths="[360, 540, 720, 940, 1080, 1880 ]"
+                              data-aspectratio="{{ block.settings.image_3.aspect_ratio }}"
+                              data-sizes="auto"
+                              alt="{{ block.settings.image_3.alt }}">
+                        </div>
+                      {% else %}
+                        <div class="image-wrap">
+                          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="commitment-item--copy" data-aos="fade-up" data-aos-duration="2500">
+                    <h4 data-aos="fade-up" data-aos-duration="3500">{{ block.settings.title_3 }}</h4>
+                    {{ block.settings.description_3 }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        {% when 'will-follow' %}
+        <div class="company-will-follow">
+          <div class="page-width follow-small">
+            <h3 data-aos="fade-up" data-aos-duration="2500">{{ block.settings.title_block }}</h3>
+            <div class="will-follow--copy">
+              <div class="copy-hashtags">
+                <a class="copy-link" href="{{ block.settings.hashtag_url_1 }}" target="_blank" title="{{ block.settings.hashtag_title_1 }}">{{ block.settings.hashtag_title_1 }}</a>
+                <a class="copy-link" href="{{ block.settings.hashtag_url_2 }}" target="_blank" title="{{ block.settings.hashtag_title_2 }}">{{ block.settings.hashtag_title_2 }}</a>
+              </div>
+              <div class="copy-rte">
+                {{ block.settings.richtext_1 }}
+              </div>
+            </div>
+          </div>
+          <div class="page-width">
+            <div class="grid will-follow--grid">
+              {% for i in (1..8) %}
+                <div class="grid__item medium-up--one-quarter one-half" {{ block.shopify_attributes }} data-aos="zoom-in-up" data-aos-duration="1{{ i }}00">
+                  {% capture image %}image_{{ i }}{% endcapture %}
+                  {% capture image_link %}image_link_{{ i }}{% endcapture %}
+
+                  {% if block.settings[image] %}
+                    <div style="max-width: auto;">
+                      {% if block.settings[image_link] != blank %}
+                        <a class="follow-hover" href="{{ block.settings[image_link] }}" target="_blank"  data-aos="row-of-4">
+                      {% endif %}
+                      {% if block.settings[image] != blank %}
+                        <div class="image-wrap text-spacing" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings[image].aspect_ratio }}%;">
+                          {%- assign img_url = block.settings[image] | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                          <img class="lazyload"
+                              data-src="{{ img_url }}"
+                              data-widths="[180, 360, 540, 720, 900, 1080]"
+                              data-aspectratio="{{ block.settings[image].aspect_ratio }}"
+                              data-sizes="auto"
+                              alt="{{ block.settings[image].alt }}">
+                        </div>
+                      {% else %}
+                        <div class="image-wrap text-spacing">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                      {% endif %}
+                      {% if block.settings[image_link] != blank %}
+                        </a>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+              {% endfor %}
+              <div class="grid__item medium-up--one-quarter" {{ block.shopify_attributes }} data-aos="row-of-4">
+                {% if block.settings.image %}
+                  <div style="max-width: {{ block.settings.image_width }}px;">
+                    {% if block.settings.image_link != blank %}
+                      <a href="{{ block.settings.image_link }}" target="_blank">
+                    {% endif %}
+                    {% if block.settings.image != blank %}
+                      <div class="image-wrap text-spacing" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image.aspect_ratio }}%;">
+                        {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                        <img class="lazyload"
+                            data-src="{{ img_url }}"
+                            data-widths="[180, 360, 540, 720, 900, 1080]"
+                            data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                            data-sizes="auto"
+                            alt="{{ block.settings.image.alt }}">
+                      </div>
+                    {% else %}
+                      <div class="image-wrap text-spacing">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                    {% endif %}
+                    {% if block.settings.image_link != blank %}
+                      </a>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% when 'contact-us' %}
+        <div class="company-contact-us">
+          <div class="page-width contact-small">
+            <h3 data-aos="fade-up" data-aos-duration="2500">{{ block.settings.title_block }}</h3>
+            <div class="contact-rte">
+              <p>{{ block.settings.text_block }}</p>
+            </div>
+          </div>
+          <div class="page-width contact-small">
+            <div class="grid contact-us--grid">
+              <div class="grid__item medium-up--one-third" data-aos="flip-down" data-aos-duration="500"  data-aos="row-of-3">
+                <div class="contact-us--item text-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><g><g><path d="M25.895 9.976a4.045 4.045 0 0 1 4.09 4.04 4.045 4.045 0 0 1-4.04 4.04 4.043 4.043 0 0 1-4.04-4.124 12.81 12.81 0 0 0-7.985 7.986 4.043 4.043 0 0 1 4.124 4.038 4.045 4.045 0 0 1-4.04 4.04c-2.28 0-4.041-1.884-4.041-3.99 0-8.934 7.264-15.976 15.932-16.03zm8.245 24.162c-7.816 7.815-20.465 7.814-28.28 0-7.816-7.816-7.815-20.464 0-28.279 7.816-7.814 20.465-7.814 28.28 0 7.816 7.816 7.815 20.465 0 28.279zM20 36.71c9.215 0 16.712-7.497 16.712-16.711 0-9.214-7.497-16.711-16.712-16.711S3.288 10.784 3.288 19.999c0 9.214 7.497 16.71 16.712 16.71z"/></g></g></svg>
+                  <a class="cart-link" href="tel:{{ block.settings.cart_title_1 | remove: '-'| remove: '+' }}" title="{{ block.settings.cart_title_1 }}">{{ block.settings.cart_title_1 }}</a>
+                  <p>{{ block.settings.cart_text_1 }}</p>
+                </div>
+              </div>
+
+              <div class="grid__item medium-up--one-third" data-aos="flip-down" data-aos-duration="1500"  data-aos="row-of-3">
+                <div class="contact-us--item text-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><g><g><path d="M36.875 25.938V17.08L23.3 25.52a6.24 6.24 0 0 1-3.3.95 6.24 6.24 0 0 1-3.3-.95l-13.575-8.44V33.75a3.129 3.129 0 0 0 3.125 3.125h27.5a3.129 3.129 0 0 0 3.125-3.125 1.562 1.562 0 1 1 3.125 0A6.257 6.257 0 0 1 33.75 40H6.25A6.257 6.257 0 0 1 0 33.75V15.046A6.223 6.223 0 0 1 2.882 9.78l3.759-2.404V1.562C6.64.7 7.34 0 8.203 0h23.594c.863 0 1.562.7 1.562 1.562v5.822l3.761 2.408A6.222 6.222 0 0 1 40 15.055v10.883a1.563 1.563 0 0 1-3.125 0zm-3.516-14.844v4.493l3.167-1.969a3.117 3.117 0 0 0-1.09-1.195zM3.471 13.616l3.17 1.971v-4.5l-2.075 1.326c-.475.304-.847.72-1.095 1.203zm26.763 3.914V3.125H9.766V17.53l8.584 5.338a3.105 3.105 0 0 0 3.3 0zm-8.672-5.577a1.562 1.562 0 1 1-3.124 0 1.562 1.562 0 0 1 3.124 0zm5.625 0a1.562 1.562 0 1 1-3.124 0 1.562 1.562 0 0 1 3.124 0zm-11.328 0a1.562 1.562 0 1 1-3.124 0 1.562 1.562 0 0 1 3.124 0z"/></g></g></svg>
+                  <a class="cart-link" href="mailto:{{ block.settings.cart_title_2 }}" title="{{ block.settings.cart_title_2 }}">{{ block.settings.cart_title_2 }}</a>
+                  <p>{{ block.settings.cart_text_2 }}</p>
+                </div>
+              </div>
+
+              <div class="grid__item medium-up--one-third" data-aos="flip-down" data-aos-duration="2500"  data-aos="row-of-3">
+                <div class="contact-us--item text-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><g><g><path d="M10.937 17.422v14.687c0 .863-.7 1.563-1.562 1.563H6.25A6.257 6.257 0 0 1 0 27.422v-5.313c0-2.309 1.26-4.328 3.127-5.41a16.76 16.76 0 0 1 4.94-11.756A16.763 16.763 0 0 1 20 0c3.517 0 6.887 1.071 9.747 3.098a16.836 16.836 0 0 1 6.084 7.923 1.563 1.563 0 0 1-2.93 1.084C30.912 6.734 25.728 3.125 20 3.125c-7.24 0-13.19 5.625-13.712 12.734h3.087c.863 0 1.562.7 1.562 1.563zm-3.125 1.562H6.25a3.129 3.129 0 0 0-3.125 3.125v5.313a3.129 3.129 0 0 0 3.125 3.125h1.562zM40 22.11v5.313a6.257 6.257 0 0 1-6.25 6.25h-1.563v.078a4.693 4.693 0 0 1-4.687 4.687h-4.766v-.049a3.125 3.125 0 1 1 0-3.026v-.05H27.5c.862 0 1.562-.7 1.562-1.562V17.422c0-.863.7-1.563 1.563-1.563h3.125A6.257 6.257 0 0 1 40 22.11zm-3.125 0a3.129 3.129 0 0 0-3.125-3.125h-1.562v11.563h1.562a3.129 3.129 0 0 0 3.125-3.125z"/></g></g></svg>
+                  <p class="cart-text">{{ block.settings.cart_title_3 }}</p>
+                  <p>{{ block.settings.cart_text_3 }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      {% endcase %}
+    </div>
+  {% endfor %}
+
+{% schema %}
+  {
+    "name": "Page blocks",
+    "class": "page-company-sections",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Text section",
+        "info": "Add text below"
+      },
+      {
+        "type": "richtext",
+        "id": "text_1",
+        "label": "Text"
+      },
+      {
+        "type": "header",
+        "content": "3 Grey rectangles"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "rectangles",
+        "name": "3 Grey rectangles",
+        "settings": [
+          {
+            "type": "textarea",
+            "id": "rect_1",
+            "label": "Rectangle 1",
+            "info": "Edit html below"
+          },
+          {
+            "type": "textarea",
+            "id": "rect_2",
+            "label": "Rectangle 2",
+            "info": "Edit html below"
+          },
+          {
+            "type": "textarea",
+            "id": "rect_3",
+            "label": "Rectangle 3",
+            "info": "Edit html below"
+          }
+        ]
+      },
+      {
+        "type": "image-promo",
+        "name": "Image banner",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      },
+      {
+        "type": "our-commitment",
+        "name": "Nuestro Compromiso",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text"
+          },
+          {
+            "type": "text",
+            "id": "title_block",
+            "label": "Title block",
+            "default": "Nuestro <br>Compromiso"
+          },
+          {
+            "type": "header",
+            "content": "Image #1",
+            "info": "Add Image, Title and description below"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_1",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title_1",
+            "label": "Title",
+            "default": "Misión"
+          },
+          {
+            "type": "textarea",
+            "id": "description_1",
+            "label": "Description"
+          },
+          {
+            "type": "header",
+            "content": "Image #2",
+            "info": "Add Image, Title and description below"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_2",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title_2",
+            "label": "Title",
+            "default": "Visión"
+          },
+          {
+            "type": "textarea",
+            "id": "description_2",
+            "label": "Description"
+          },
+          {
+            "type": "header",
+            "content": "Image #3",
+            "info": "Add Image, Title and description below"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_3",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title_3",
+            "label": "Title",
+            "default": "Visión"
+          },
+          {
+            "type": "textarea",
+            "id": "description_3",
+            "label": "Description"
+          }
+        ]
+      },
+      {
+        "type": "will-follow",
+        "name": "Follow us block",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title_block",
+            "label": "Title block",
+            "default": "Seguir a<br> Innovar"
+          },
+          {
+            "type": "text",
+            "id": "hashtag_title_1",
+            "label": "Hashtag 1",
+            "default": "#CreandoMomentos"
+          },
+          {
+            "type": "url",
+            "id": "hashtag_url_1",
+            "label": "Hashtag url 1"
+          },
+          {
+            "type": "text",
+            "id": "hashtag_title_2",
+            "label": "Hashtag 2",
+            "default": "#InnovarDelivery"
+          },
+          {
+            "type": "url",
+            "id": "hashtag_url_2",
+            "label": "Hashtag url 2"
+          },
+          {
+            "type": "richtext",
+            "id": "richtext_1",
+            "label": "Description text"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_1",
+            "label": "Image 1"
+          },
+          {
+            "type": "url",
+            "id": "image_link_1",
+            "label": "Image url 1",
+            "info": "Open in new tab"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_2",
+            "label": "Image 2"
+          },
+          {
+            "type": "url",
+            "id": "image_link_2",
+            "label": "Image url 2",
+            "info": "Open in new tab"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_3",
+            "label": "Image 3"
+          },
+          {
+            "type": "url",
+            "id": "image_link_3",
+            "label": "Image url 3",
+            "info": "Open in new tab"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_4",
+            "label": "Image 4"
+          },
+          {
+            "type": "url",
+            "id": "image_link_4",
+            "label": "Image url 4",
+            "info": "Open in new tab"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_5",
+            "label": "Image 5"
+          },
+          {
+            "type": "url",
+            "id": "image_link_5",
+            "label": "Image url 5",
+            "info": "Open in new tab"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_6",
+            "label": "Image 6"
+          },
+          {
+            "type": "url",
+            "id": "image_link_6",
+            "label": "Image url 6",
+            "info": "Open in new tab"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_7",
+            "label": "Image 7"
+          },
+          {
+            "type": "url",
+            "id": "image_link_7",
+            "label": "Image url 7",
+            "info": "Open in new tab"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_8",
+            "label": "Image 8"
+          },
+          {
+            "type": "url",
+            "id": "image_link_8",
+            "label": "Image url 8",
+            "info": "Open in new tab"
+          }
+        ]
+      },
+      {
+        "type": "contact-us",
+        "name": "Contactar a Innovar",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title_block",
+            "label": "Title block",
+            "default": "Contactar<br> a Innovar"
+          },
+          {
+            "type": "textarea",
+            "id": "text_block",
+            "label": "Text"
+          },
+          {
+            "type": "header",
+            "content": "#1. Phone number cart"
+          },
+          {
+            "type": "text",
+            "id": "cart_title_1",
+            "label": "Phone number",
+            "default": "+5821-2988-1494"
+          },
+          {
+            "type": "textarea",
+            "id": "cart_text_1",
+            "label": "Cart description",
+            "default": "La mejor forma de obtener la respuesta más rápido."
+          },
+          {
+            "type": "header",
+            "content": "#2. Email cart"
+          },
+          {
+            "type": "text",
+            "id": "cart_title_2",
+            "label": "Email address",
+            "default": "info@innovar.com.ve"
+          },
+          {
+            "type": "textarea",
+            "id": "cart_text_2",
+            "label": "Cart description",
+            "default": "Siempre estamos felices de ayudar."
+          },
+          {
+            "type": "header",
+            "content": "#3. Chat cart"
+          },
+          {
+            "type": "text",
+            "id": "cart_title_3",
+            "label": "Text",
+            "default": "Habla con nosotros"
+          },
+          {
+            "type": "textarea",
+            "id": "cart_text_3",
+            "label": "Cart description",
+            "default": "Chat en vivo con un miembro del equipo de soporte"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

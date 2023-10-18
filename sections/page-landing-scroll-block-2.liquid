@@ -1,0 +1,212 @@
+
+<div class="page-width">
+  <div class="scroll-row" id="scroll-row--{{ section.id }}">
+    <div id="scroll-block2" class="scroll-row--left" data-aos >
+        <div class="scroll-row--copy text-center">
+            {% if section.settings.subtitle != blank %}
+                <p class="h5" data-aos="fade-up" data-aos-duration="1500">{{ section.settings.subtitle }}</p>
+            {% endif %}
+            {% if section.settings.title != blank %}
+                <p class="h1" data-aos="fade-up" data-aos-duration="2000">{{ section.settings.title | escape }}</p>
+            {% endif %}
+            {% if section.settings.text != blank %}
+                <div class="rte featured-row__subtext" data-aos="fade-up" data-aos-duration="2500">{{ section.settings.text }}</div>
+            {% endif %}
+            {% if section.settings.button_label != blank %}
+                <a href="{{ section.settings.button_link }}" class="btn" data-aos="fade-up" data-aos-duration="3000">
+                {{ section.settings.button_label }}
+                </a>
+            {% endif %}
+        </div>
+        <div style="margin: 0 auto; max-width: {{ section.settings.image_width }}px;" data-aos="fade-up" data-aos-offset="400" data-aos-easing="ease-in-sine" data-aos-duration="3500">
+            {% if section.settings.image != blank %}
+            {% if section.settings.button_label != blank and section.settings.button_link != blank %}<a href="{{ section.settings.button_link }}">{% endif %}
+            <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image.aspect_ratio }}%;">
+                {%- assign img_url = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                <img class="feature-row__image lazyload"
+                    data-src="{{ img_url }}"
+                    data-widths="[180, 360, 540, 720, 900, 1080]"
+                    data-aspectratio="{{ section.settings.image.aspect_ratio }}"
+                    data-sizes="auto"
+                    alt="{{ section.settings.image.alt }}">
+            </div>
+            {% if section.settings.button_label != blank and section.settings.button_link != blank %}</a>{% endif %}
+            {% else %}
+            <div class="image-wrap">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="scroll-row--right" data-aos>
+      {% for block in section.blocks %}
+        <div class="scroll-row--item">
+          <div class="row-item--img">
+            {% if block.settings.image != blank %}
+              {% if block.settings.block_link != blank %}<a href="{{ block.settings.block_link }}">{% endif %}
+              <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image.aspect_ratio }}%;">
+                {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                <img class="feature-row__image lazyload"
+                    data-src="{{ img_url }}"
+                    data-widths="[180, 360, 540, 580, 720, 900, 1080]"
+                    data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                    data-sizes="auto"
+                    alt="{{ block.settings.image.alt }}">
+              </div>
+              {% if block.settings.block_link != blank %}</a>{% endif %}
+            {% else %}
+              <div class="image-wrap">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {% endif %}
+
+            <div class="row-item--text">
+              {% if block.settings.title != blank %}
+                <p class="h3" data-aos="fade-up" data-aos-duration="1500">
+                  {{ block.settings.title | escape }}
+                </p>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <div class="rte" data-aos="fade-up" data-aos-duration="2000">
+                    {{ block.settings.text }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="scroll-stop"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var a = document.querySelector('#scroll-row--{{ section.id }} #scroll-block2'), b = null, P = 60;  // если ноль заменить на число, то блок будет прилипать до того, как верхний край окна браузера дойдёт до верхнего края элемента. Может быть отрицательным числом
+  window.addEventListener('scroll', Ascroll, false);
+  document.body.addEventListener('scroll', Ascroll, false);
+  /*Элемент прилипает только во время прохождения скроллом другого элемента*/
+  function Ascroll() {
+  if (b == null) {
+    var Sa = getComputedStyle(a, ''), s = '';
+    for (var i = 0; i < Sa.length; i++) {
+      if (Sa[i].indexOf('overflow') == 0 || Sa[i].indexOf('padding') == 0 || Sa[i].indexOf('border') == 0 || Sa[i].indexOf('outline') == 0 || Sa[i].indexOf('box-shadow') == 0 || Sa[i].indexOf('background') == 0) {
+        s += Sa[i] + ': ' +Sa.getPropertyValue(Sa[i]) + '; '
+      }
+    }
+    b = document.createElement('div');
+    b.style.cssText = s + ' box-sizing: border-box; width: ' + a.offsetWidth + 'px;';
+    a.insertBefore(b, a.firstChild);
+    var l = a.childNodes.length;
+    for (var i = 1; i < l; i++) {
+      b.appendChild(a.childNodes[1]);
+    }
+    a.style.height = b.getBoundingClientRect().height + 'px';
+    a.style.padding = '0';
+    a.style.border = '0';
+  }
+  var Ra = a.getBoundingClientRect(),
+      R = Math.round(Ra.top + b.getBoundingClientRect().height - document.querySelector('#scroll-row--{{ section.id }} .scroll-row--right').getBoundingClientRect().bottom);  // селектор блока, при достижении нижнего края которого нужно открепить прилипающий элемент
+  if ((Ra.top - P) <= 0) {
+    if ((Ra.top - P) <= R) {
+      b.className = 'scroll-stop';
+      b.style.top = - R +'px';
+    } else {
+      b.className = 'scroll-sticky';
+      b.style.top = P + 'px';
+    }
+  } else {
+    b.className = '';
+    b.style.top = '';
+  }
+  window.addEventListener('resize', function() {
+    a.children[0].style.width = getComputedStyle(a, '').width
+  }, false);
+}
+}, false);
+</script>
+
+
+{% schema %}
+  {
+    "name": "Scroll block",
+    "class": "page-landing-scroll-block",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "range",
+        "id": "image_width",
+        "label": "Image width",
+        "default": 700,
+        "min": 100,
+        "max": 800,
+        "step": 10,
+        "unit": "px"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subheading",
+        "default": "Improved"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Image with text"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Pair large text with an image to tell a story, explain a detail about your product, or describe a new promotion.</p>"
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label",
+        "default": "Optional button"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text_block",
+        "name": "Scroll blocks",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Vibrant Gold Expressive"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text",
+            "default": "Strong lines and components that match your creativity and passion."
+          },
+          {
+            "type": "url",
+            "id": "block_link",
+            "label": "Link"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

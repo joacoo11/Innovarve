@@ -1,0 +1,230 @@
+<div class="page-width">
+
+    {% if section.settings.divider %}<hr class="hr--large">{% endif %}
+
+    <div class="landing-slider--colors">
+        {% if section.settings.title != blank %}
+            <div class="colors-title">
+                <p>{{ section.settings.title }}</p>
+            </div>
+        {% endif %}
+        <div class="colors-swatches">
+            <ul>
+                {% for block in section.blocks %}
+                    <li class="colors-swatch color-{{ forloop.index }}">
+
+                    {% style %}
+                      .page-landing-color-slider .colors-swatches li.colors-swatch.color-{{ forloop.index }} {
+                        background-color:{{ block.settings.color }};
+                      }
+                      .page-landing-color-slider .colors-swatches li.slick-current.colors-swatch.color-{{ forloop.index }}:before{
+                        border-color: {{ block.settings.color }};
+                      }
+                    {% endstyle %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="landing-slider--hero">
+        {% for block in section.blocks %}
+            <div class="landing-slider--images">
+                {% if block.settings.color_title != blank %}
+                    <h3 class="color-title text-center" style="color: {{ block.settings.color }};" data-aos="fade-right">
+                        {{ block.settings.color_title }}
+                    </h3>
+                {% endif %}
+                <div class="images" style="border-color: {{ block.settings.color }};">
+                    {% if block.settings.image != blank %}
+                      <div class="feature-row__item-image image-1" style="border-color: {{ block.settings.color }};">
+                        <div style="margin: 0 auto; max-width: auto;">
+                          <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image.aspect_ratio }}%;">
+                            {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                            <img class="feature-row__image lazyload"
+                                data-src="{{ img_url }}"
+                                data-widths="[180, 360, 540, 720, 900, 1080]"
+                                data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                                data-sizes="auto"
+                                alt="{{ block.settings.image.alt }}">
+                          </div>
+                        </div>
+                        <div class="copy" data-aos="fade-up" data-aos-duration="1500">
+                          {% if block.settings.title != blank %}
+                          <h3>{{ block.settings.title }}</h3>
+                          {% endif %}
+                          {% if block.settings.text != blank %}
+                          <div class="rte-setting text-spacing">{{ block.settings.text }}</div>
+                          {% endif %}
+                          {% if block.settings.button_label != blank %}
+                          <a href="{{ block.settings.button_link }}" class="btn btn--secondary">
+                              {{ block.settings.button_label }}
+                          </a>
+                          {% endif %}
+                        </div>
+                      </div>
+                    {% else %}
+                        <div class="image image-1 image-wrap">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                    {% endif %}
+                    {% if block.settings.image_2 != blank %}
+                      <div class="feature-row__item-image" style="border-color: {{ block.settings.color }};">
+                        <div style="margin: 0 auto; max-width: auto;">
+                          <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image_2.aspect_ratio }}%;">
+                            {%- assign img_url = block.settings.image_2 | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                            <img class="feature-row__image lazyload"
+                                data-src="{{ img_url }}"
+                                data-widths="[180, 360, 540, 720, 900, 1080]"
+                                data-aspectratio="{{ block.settings.image_2.aspect_ratio }}"
+                                data-sizes="auto"
+                                alt="{{ block.settings.image_2.alt }}">
+                          </div>
+                        </div>
+                      </div>
+                    {% else %}
+                        <div class="image-wrap">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                    {% endif %}
+                    {% if block.settings.image_3 != blank %}
+                      <div class="feature-row__item-image" style="border-color: {{ block.settings.color }};">
+                          <div style="margin: 0 auto; max-width: auto;">
+                            <div class="image-wrap" style="height: 0; padding-bottom: {{ 100 | divided_by: block.settings.image_3.aspect_ratio }}%;">
+                              {%- assign img_url = block.settings.image_3 | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                              <img class="feature-row__image lazyload"
+                                  data-src="{{ img_url }}"
+                                  data-widths="[180, 360, 540, 720, 900, 1080]"
+                                  data-aspectratio="{{ block.settings.image_3.aspect_ratio }}"
+                                  data-sizes="auto"
+                                  alt="{{ block.settings.image_3.alt }}">
+                            </div>
+                          </div>
+                        </div>
+                    {% else %}
+                        <div class="image-wrap">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+  $('.landing-slider--colors .colors-swatches ul').slick({
+    focusOnSelect: true,
+    //arrows: true,
+    appendArrows: $('.landing-slider--colors').find('.colors-title'),
+    slidesToShow: 8,
+    infinite: true,
+    slidesToScroll: 1,
+    centerMode: true,
+    asNavFor: '.landing-slider--hero',
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  });
+  $('.landing-slider--hero').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    infinite: true,
+    fade: true,
+    cssEase: 'linear',
+    speed: 1800,
+    asNavFor: '.landing-slider--colors .colors-swatches ul',
+    arrows: false,
+    //appendArrows: $('.landing-slider--colors').find('.colors-title'),
+    dots: false,
+    focusOnSelect: true
+  });
+}, false);
+</script>
+
+
+
+{% schema %}
+  {
+    "name": "Slider with colors",
+    "class": "index-section page-landing-color-slider",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Slider heading text",
+        "default": "Explore The Colors"
+      },
+      {
+        "type": "checkbox",
+        "id": "divider",
+        "label": "Show section divider",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text_block",
+        "name": "Slide",
+        "settings": [
+          {
+              "type": "color",
+              "id": "color",
+              "label": "Color"
+          },
+          {
+            "type": "text",
+            "id": "color_title",
+            "label": "Color title",
+            "info": "Ex: Passion Red"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_2",
+            "label": "Image 2"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_3",
+            "label": "Image 3"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Vibrant Gold Expressive"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this section to explain a set of product features, to link to a series of pages, or to answer common questions about your products. Add images for emphasis.</p>"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label",
+            "default": "Optional button"
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Link"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

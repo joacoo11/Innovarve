@@ -1,0 +1,25 @@
+<div class="index-section {{ section_class }} landing--rich-text">
+  <div class="page-width text-{{ block.settings.align_text }}">
+    <div class="grid">
+      <div class="grid__item{% if block.settings.narrow_column %} medium-up--three-quarters medium-up--push-one-eighth{% endif %}">
+        {% if block.settings.sub_title != blank %}
+          <p class="sub_rte" data-aos="fade-up" data-aos-duration="1000">
+            {{ block.settings.sub_title | escape }}
+          </p>
+        {% endif %}
+        {% if block.settings.title != blank %}
+          <p class="h2" data-aos="fade-up" data-aos-duration="1500">
+            {{ block.settings.title | escape }}
+          </p>
+        {% endif %}
+        {% if block.settings.text != blank %}
+          <div class="rte" data-aos="fade-up" data-aos-duration="2000">
+            {% if block.settings.enlarge_text %}<div class="enlarge-text">{% endif %}
+              {{ block.settings.text }}
+            {% if block.settings.enlarge_text %}</div>{% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

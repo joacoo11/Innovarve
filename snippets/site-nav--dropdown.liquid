@@ -1,0 +1,97 @@
+{%- assign has_megamenu = false -%}
+{%- assign megamenu = '' -%}
+
+{%- if section.blocks.size > 0 -%}
+  {%- for block in section.blocks -%}
+
+    {% case block.type %}
+        {% when 'drop_link' %}
+            {%- assign link_title = link.title | escape | downcase -%}
+            {%- assign megamenu_title = block.settings.title | escape | downcase -%}
+            {%- assign title_hendleize = block.settings.title  | handleize -%}
+
+            {%- if toplevel and link.handle == title_hendleize -%}
+                {%- assign has_megamenu = true -%}
+
+                {%- capture megamenu -%}
+                    <div class="site-nav__dropdown megamenu text-left dropdown_link-megamenu">
+                        <div class="page-width dropdown_link-megamenu-cont">
+                            {% for i in (1..12) %}
+                                {%- assign icon_key = i | prepend: 'icon_' -%}
+                                {%- assign heading_key = i | prepend: 'title_' -%}
+                                {%- assign link_key = i | prepend: 'link_' -%}
+
+                                {%- assign icon = block.settings[icon_key] -%}
+                                {%- assign heading = block.settings[heading_key] -%}
+                                {%- assign icon_link = block.settings[link_key] -%}
+
+                                {% if icon != blank and  heading != blank and icon_link != blank %}
+                                    <div class="dropdown_link-item">
+                                        <span class="site-nav__dropdown-icon">{{icon}}</span>
+                                        <a href="{{ icon_link }}" {% if icon_link contains 'calendly' %}target="_blank"{% endif %} class="site-nav__dropdown-link">
+                                            {{heading}}
+                                        </a>
+                                    </div>
+                                {% endif %}
+
+                            {% endfor %}
+                        </div>
+                    </div>
+                {%- endcapture -%}
+            {%- endif -%}
+        {% when 'drop_brands' %}
+            {%- assign link_title = link.title | escape | downcase -%}
+            {%- assign megamenu_title = block.settings.title | escape | downcase -%}
+            {%- assign title_hendleize = block.settings.title  | handleize -%}
+
+            {%- if toplevel and link.handle == title_hendleize -%}
+                {%- assign has_megamenu = true -%}
+
+                {%- capture megamenu -%}
+                    <div class="site-nav__dropdown megamenu dropdown_brand-megamenu" data-aos="logo__animation">
+                        <div class="page-width dropdown_brand-megamenu-cont">
+                            {% for i in (1..12) %}
+                                {%- assign img_key = i | prepend: 'image_' -%}
+                                {%- assign brand_link_key = i | prepend: 'link_' -%}
+
+                                {%- assign brand_image = block.settings[img_key] -%}
+                                {%- assign brand_link = block.settings[brand_link_key] -%}
+
+                                {% if brand_image != blank and  brand_link != blank %}
+                                    <div class="dropdown_brand-item" {{ block.shopify_attributes }}>
+                                        <a href="{{ brand_link }}" class="dropdown_brand__link">
+                                        {% if brand_image != blank %}
+                                            {%- assign img_url = brand_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                                            <img class="dropdown_brand__image lazyload"
+                                                data-src="{{ img_url }}"
+                                                data-widths="[120, 160, 180, 220, 280, 360, 540]"
+                                                data-aspectratio="{{ brand_image.aspect_ratio }}"
+                                                data-sizes="auto"
+                                                alt="{{ brand_image.alt }}">
+                                        {% else %}
+                                            {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+                                        {% endif %}
+                                        </a>
+                                    </div>
+                                {% endif %}
+
+                            {% endfor %}
+                            {% if block.settings.btn_link != blank and  block.settings.btn_label != blank %}
+                                <div class="dropdown_brand-megamenu-bottom text-center">
+                                    <a href="{{ block.settings.btn_link }}" data-aos="fade-up" data-aos-duration="1800" class="btn btn--secondary aos-init aos-animate">
+                                        {{ block.settings.btn_label}}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {%- endcapture -%}
+            {%- endif -%}
+    {% endcase %}
+
+
+  {%- endfor -%}
+{%- endif -%}
+
+
+

@@ -1,0 +1,23 @@
+{%- liquid 
+assign showNote = false
+assign text = settings.cart_weight | default : 'If you want to ship your order outside capital, please contact us to discuss shipping, please contact us +58 412-231-2999 or email us info@innovar.com.ve'
+for item in cart.items 
+
+    if item.grams > 9071
+        assign showNote = true
+    endif 
+endfor -%}
+
+{%- if showNote -%}
+    <div class="cart__shipping-note">
+        {{text}}
+    </div>
+{%- endif -%}
+<style>
+    .cart__shipping-note{
+        padding: 20px;
+    }
+    .cart__shipping-note a{
+        color: #ff3400!important;
+    } 
+</style>

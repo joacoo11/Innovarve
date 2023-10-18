@@ -1,0 +1,214 @@
+{%- assign per_row = section.settings.per_row -%}
+{%- assign paginate_by = per_row | times: section.settings.rows_per_page -%}
+
+{% paginate collection.products by paginate_by %}
+
+<div
+  id="CollectionSection"
+  data-section-id="{{ section.id }}"
+  data-section-type="collection-template">
+
+  {%- if section.settings.description_position == 'top' -%}
+    {% if collection.description != blank %}
+      <div class="rte">
+        {{ collection.description }}
+      </div>
+      <hr class="hr--clear hr--small">
+    {% endif %}
+  {%- endif -%}
+
+  {%- comment -%}
+  {%- if section.settings.subcollection_style == 'above' -%}
+    {%- include 'subcollections', per_row: section.settings.subcollections_per_row -%}
+  {%- endif -%}
+  {%- endcomment -%}
+
+  <div class="collection-filter">
+    {%- assign current_filter_size = current_tags | size -%}
+    <div class="collection-filter__item collection-filter__item--drawer">
+      <button
+        type="button"
+        class="js-drawer-open-collection-filters btn btn--tertiary{% unless current_filter_size == 0 %} btn--tertiary-active{% endunless %}"
+        aria-controls="FilterDrawer">
+        <!-- <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-filter" viewBox="0 0 64 64"><path d="M48 42h10M48 42a5 5 0 1 1-5-5 5 5 0 0 1 5 5zM7 42h31M16 22H6M16 22a5 5 0 1 1 5 5 5 5 0 0 1-5-5zM57 22H26"/></svg> -->
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px"><path fill-rule="evenodd"  fill="rgb(255, 255, 255)" d="M0.750,3.000 L9.000,3.000 C9.000,3.828 9.672,4.500 10.500,4.500 L12.000,4.500 C12.828,4.500 13.500,3.828 13.500,3.000 L14.250,3.000 C14.664,3.000 15.000,2.664 15.000,2.250 C15.000,1.836 14.664,1.500 14.250,1.500 L13.500,1.500 C13.500,0.672 12.828,0.000 12.000,0.000 L10.500,0.000 C9.672,0.000 9.000,0.672 9.000,1.500 L0.750,1.500 C0.336,1.500 0.000,1.836 0.000,2.250 C0.000,2.664 0.336,3.000 0.750,3.000 ZM10.500,1.500 L12.000,1.500 L12.000,2.250 L12.000,3.000 L10.500,3.000 L10.500,1.500 ZM14.250,6.750 L7.500,6.750 C7.500,5.921 6.828,5.250 6.000,5.250 L4.500,5.250 C3.672,5.250 3.000,5.921 3.000,6.750 L0.750,6.750 C0.336,6.750 0.000,7.086 0.000,7.500 C0.000,7.914 0.336,8.250 0.750,8.250 L3.000,8.250 C3.000,9.078 3.672,9.750 4.500,9.750 L6.000,9.750 C6.828,9.750 7.500,9.078 7.500,8.250 L14.250,8.250 C14.664,8.250 15.000,7.914 15.000,7.500 C15.000,7.086 14.664,6.750 14.250,6.750 ZM4.500,8.250 L4.500,6.750 L6.000,6.750 L6.000,7.500 L6.000,8.250 L4.500,8.250 ZM14.250,12.000 L12.000,12.000 C12.000,11.171 11.328,10.500 10.500,10.500 L9.000,10.500 C8.172,10.500 7.500,11.171 7.500,12.000 L0.750,12.000 C0.336,12.000 0.000,12.336 0.000,12.750 C0.000,13.164 0.336,13.500 0.750,13.500 L7.500,13.500 C7.500,14.328 8.172,15.000 9.000,15.000 L10.500,15.000 C11.328,15.000 12.000,14.328 12.000,13.500 L14.250,13.500 C14.664,13.500 15.000,13.164 15.000,12.750 C15.000,12.336 14.664,12.000 14.250,12.000 ZM9.000,13.500 L9.000,12.000 L10.500,12.000 L10.500,12.750 L10.500,13.500 L9.000,13.500 Z"/></svg>
+        {{ 'collections.filters.title_tags' | t }}
+        {%- if current_filter_size > 0 -%}
+          ({{ current_filter_size }})
+        {%- endif -%}
+      </button>
+    </div>
+
+    <div class="collection-filter__item collection-filter__item--count small--hide">
+      {%- if section.settings.enable_collection_count -%}
+        {{ 'collections.general.items_with_count' | t: count: collection.products_count }}
+      {%- endif -%}
+    </div>
+
+    <div class="collection-filter__item collection-filter__item--sort">
+      <div class="collection-filter__sort-container">
+        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+        <label for="SortBy" class="hidden-label">{{ 'collections.sorting.title' | t }}</label>
+        <select name="SortBy" id="SortBy" data-default-sortby="{{ collection.default_sort_by }}">
+          <option value="title-ascending"{% if sort_by == collection.default_sort_by %} selected="selected"{% endif %}>{{ 'collections.sorting.title' | t }}</option>
+          {% for option in collection.sort_options %}
+            <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>{{ option.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </div>
+
+  {%- if section.settings.enable_collection_count -%}
+    <p class="medium-up--hide text-center" data-scroll-to>{{ 'collections.general.items_with_count' | t: count: collection.products_count }}</p>
+  {%- endif -%}
+
+  <div
+    class="grid grid--uniform grid--collection{% if section.settings.mobile_flush_grid %} small--grid--flush{% endif %}"
+    {% unless section.settings.enable_collection_count %} data-scroll-to{% endunless %}>
+    {%- assign grid_item_width = 'small--one-half medium-up--one-third' -%}
+
+    {% case per_row %}
+    {% when 2 %}
+      {%- assign grid_item_width = 'medium-up--one-half' -%}
+    {% when 3 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-third' -%}
+    {% when 4 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-quarter' -%}
+    {% when 5 %}
+      {%- assign grid_item_width = 'small--one-half medium-up--one-fifth' -%}
+    {% endcase %}
+
+    {%- for product in collection.products -%}
+      {%- include 'product-grid-item' -%}
+    {%- else -%}
+      <div class="grid__item">
+        <p>{{ 'collections.general.no_matches' | t }}</p>
+      </div>
+    {%- endfor -%}
+
+  </div>
+
+  {%- if section.settings.subcollection_style == 'below' -%}
+    {%- include 'subcollections', per_row: section.settings.subcollections_per_row -%}
+  {%- endif -%}
+
+  {%- if paginate.pages > 1 -%}
+    {%- include 'pagination' -%}
+  {%- endif -%}
+
+  {%- if section.settings.description_position == 'bottom' -%}
+    {% if collection.description != blank %}
+      <hr class="hr--clear hr--small">
+      <div class="rte">
+        {{ collection.description }}
+      </div>
+      <hr class="hr--clear hr--small">
+    {% endif %}
+  {%- endif -%}
+
+  {%- if settings.quick_shop_enable -%}
+    {%- for product in collection.products -%}
+      {%- if product.available -%}
+        {%- include 'quick-shop-modal' -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+</div>
+
+{% endpaginate %}
+
+{% schema %}
+  {
+    "name": "Collection pages",
+    "settings": [
+      {
+        "type": "select",
+        "id": "description_position",
+        "label": "Collection description position",
+        "default": "top",
+        "options": [
+          {
+            "value": "top",
+            "label": "Top"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Subcollections"
+      },
+      {
+        "type": "paragraph",
+        "content": "Links to collections from your menu will appear here. [Learn more](https://archetypethemes.co/blogs/impulse/how-do-i-create-subcollections)"
+      },
+      {
+        "type": "select",
+        "id": "subcollection_style",
+        "label": "Subcollection style",
+        "default": "above",
+        "options": [
+          {
+            "value": "above",
+            "label": "Above products"
+          },
+          {
+            "value": "below",
+            "label": "Below products"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "subcollections_per_row",
+        "label": "Subcollections per row",
+        "default": 5,
+        "min": 2,
+        "max": 5,
+        "step": 1
+      },
+      {
+        "type": "header",
+        "content": "Products"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_collection_count",
+        "label": "Enable collection count",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "per_row",
+        "label": "Products per row",
+        "default": 4,
+        "min": 2,
+        "max": 5,
+        "step": 1
+      },
+      {
+        "type": "range",
+        "id": "rows_per_page",
+        "label": "Rows per page",
+        "default": 7,
+        "min": 3,
+        "max": 20,
+        "step": 1
+      },
+      {
+        "type": "checkbox",
+        "id": "mobile_flush_grid",
+        "label": "Flush grid on mobile",
+        "default": false
+      }
+    ]
+  }
+{% endschema %}
