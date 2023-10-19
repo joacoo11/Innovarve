@@ -74,6 +74,10 @@
   {% include 'font-face' %}
   {{ 'theme2.scss.css' | asset_url | stylesheet_tag }}
   {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+  {% if template contains 'collection' %}
+  <script src="{{ 'jgl-collection.js' | asset_url }}" defer="defer"></script>
+  {% endif %}
+
   
 
   {% style %}
