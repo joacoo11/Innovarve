@@ -579,7 +579,7 @@
           "1524772785241": {
             "type": "subcollections",
             "settings": {
-              "enable_subsubcollections": true,
+              "enable_subsubcollections": false,
               "enable_count": false,
               "collapsed": true
             }
